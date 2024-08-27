@@ -41,14 +41,14 @@ class _SayaScreenState extends State<SayaScreen> {
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 15,
+                            fontSize: 16,
                           ),
                         ),
                         Text(
                           'izzaalfiansyah7@gmail.com',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 11,
+                            fontSize: 12,
                           ),
                         )
                       ],
