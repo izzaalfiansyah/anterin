@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class MenuItem {
+class BottomNavBarItem {
   final IconData icon;
   final String label;
   final String path;
   final Function(BuildContext context)? onTap;
 
-  MenuItem(
+  BottomNavBarItem(
       {required this.icon,
       required this.label,
       required this.path,
@@ -25,8 +25,8 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int activeIndex = 0;
 
-  final List<MenuItem> menus = [
-    MenuItem(
+  final List<BottomNavBarItem> menus = [
+    BottomNavBarItem(
       icon: Icons.home,
       path: '/home',
       label: 'Beranda',
@@ -34,17 +34,17 @@ class _BottomNavBarState extends State<BottomNavBar> {
         Navigator.of(context).popUntil(ModalRoute.withName('/home'));
       },
     ),
-    MenuItem(
+    BottomNavBarItem(
       icon: Icons.bookmark,
       label: 'Pesanan',
       path: '/pesanan',
     ),
-    MenuItem(
+    BottomNavBarItem(
       icon: Icons.notifications,
       label: 'Inbox',
       path: '/inbox',
     ),
-    MenuItem(
+    BottomNavBarItem(
       icon: Icons.account_circle,
       label: 'Saya',
       path: '/saya',
