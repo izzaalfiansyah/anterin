@@ -1,10 +1,17 @@
-import 'package:anterin/screens/home.dart';
-import 'package:anterin/screens/home/makan_minum.dart';
-import 'package:anterin/screens/saya.dart';
+import 'package:anterin/screens/home/index.dart';
+import 'package:anterin/screens/home/makan_minum/index.dart';
+import 'package:anterin/screens/saya/index.dart';
 import 'package:flutter/material.dart';
 
-final Map<String, WidgetBuilder> routes = {
-  '/home': (context) => HomeScreen(),
-  '/saya': (context) => SayaScreen(),
-  '/makan_minum': (context) => MakanMinumScreen(),
-};
+class Route {
+  final String path;
+  final Widget widget;
+
+  Route({required this.path, required this.widget});
+}
+
+List<Route> allRoutes = [
+  Route(path: '/', widget: HomeScreen()),
+  Route(path: '/saya', widget: SayaScreen()),
+  Route(path: '/makan_minum', widget: MakanMinumScreen()),
+];

@@ -2,6 +2,7 @@ import 'package:anterin/components/bottom_nav_bar.dart';
 import 'package:anterin/constant.dart';
 import 'package:anterin/types/kategori_layanan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -85,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               return InkWell(
                 onTap: () {
-                  Navigator.of(context).pushNamed(kategoriLayanan.path);
+                  Modular.to.pushNamed(kategoriLayanan.path);
                 },
                 focusColor: Colors.transparent,
                 child: Container(

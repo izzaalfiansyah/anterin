@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class BottomNavBarItem {
   final IconData icon;
@@ -28,10 +29,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final List<BottomNavBarItem> menus = [
     BottomNavBarItem(
       icon: Icons.home,
-      path: '/home',
+      path: '/',
       label: 'Beranda',
       onTap: (context) {
-        Navigator.of(context).popUntil(ModalRoute.withName('/home'));
+        Modular.to.popUntil((route) => route.isFirst);
       },
     ),
     BottomNavBarItem(
@@ -53,20 +54,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    final path = ModalRoute.of(context)?.settings.name;
-
-    if (path != null) {
-      final menuIndex =
-          menus.indexOf(menus.firstWhere((menu) => menu.path == path));
-      setState(() {
-        activeIndex = menuIndex;
-      });
-    }
-
     return BottomNavigationBar(
       showUnselectedLabels: true,
       showSelectedLabels: true,
-      currentIndex: activeIndex,
+      currentIndex: menus
+          .indexOf(menus.firstWhere((menu) => menu.path == Modular.to.path)),
       items: menus.map((item) {
         return BottomNavigationBarItem(
           icon: Icon(item.icon),
@@ -79,7 +71,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
         if (menu.onTap != null) {
           menu.onTap!(context);
         } else {
-          Navigator.of(context).pushNamed(menu.path);
+          Modular.to.pushNamed('/saya');
+          // Navigator.of(context).pushNamed(menu.path);
         }
       },
     );
