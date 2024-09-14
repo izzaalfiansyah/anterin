@@ -12,11 +12,11 @@ final shadowSm = [
 ];
 
 final colors = [
-  Colors.amber,
-  Colors.purple,
   Colors.green,
-  Colors.teal,
   Colors.pink,
+  Colors.purple,
+  Colors.amber,
+  Colors.teal,
   Colors.blue,
   Colors.red,
   Colors.orange,
