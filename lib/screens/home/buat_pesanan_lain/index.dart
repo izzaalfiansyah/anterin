@@ -1,4 +1,5 @@
 import 'package:anterin/blocs/order.dart';
+import 'package:anterin/components/form_group.dart';
 import 'package:anterin/components/hr.dart';
 import 'package:anterin/components/maps.dart';
 import 'package:anterin/constant.dart';
@@ -106,26 +107,13 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Titik Jemput'),
-                        SizedBox(height: 10),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey.shade300),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: EdgeInsets.only(left: 13),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Alamat',
-                                  ),
-                                  controller: pickupAddressController,
-                                ),
-                              ),
-                              IconButton(
+                        FormGroup(
+                          label: Text('Titik Jemput'),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Alamat',
+                              suffixIcon: IconButton(
                                 onPressed: () async {
                                   final locations = await locationFromAddress(
                                       pickupAddressController.text);
@@ -142,8 +130,9 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
                                   Icons.search,
                                   color: Colors.grey,
                                 ),
-                              )
-                            ],
+                              ),
+                            ),
+                            controller: pickupAddressController,
                           ),
                         ),
                         SizedBox(height: 20),
@@ -169,26 +158,13 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Titik Antar'),
-                        SizedBox(height: 10),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey.shade300),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: EdgeInsets.only(left: 13),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: 'Alamat',
-                                  ),
-                                  controller: deliveryAddressController,
-                                ),
-                              ),
-                              IconButton(
+                        FormGroup(
+                          label: Text('Titik Antar'),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Alamat',
+                              suffixIcon: IconButton(
                                 onPressed: () async {
                                   final locations = await locationFromAddress(
                                       deliveryAddressController.text);
@@ -205,8 +181,9 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
                                   Icons.search,
                                   color: Colors.grey,
                                 ),
-                              )
-                            ],
+                              ),
+                            ),
+                            controller: deliveryAddressController,
                           ),
                         ),
                         SizedBox(height: 20),

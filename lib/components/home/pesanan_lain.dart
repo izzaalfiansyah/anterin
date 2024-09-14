@@ -1,4 +1,5 @@
 import 'package:anterin/blocs/order.dart';
+import 'package:anterin/components/form_group.dart';
 import 'package:anterin/constant.dart';
 import 'package:anterin/models/order.dart';
 import 'package:anterin/screens/home/buat_pesanan_lain/index.dart';
@@ -37,14 +38,8 @@ class _PesananLainState extends State<PesananLain> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Order'),
-            SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 13),
+            FormGroup(
+              label: Text('Order'),
               child: TextFormField(
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -55,14 +50,8 @@ class _PesananLainState extends State<PesananLain> {
               ),
             ),
             SizedBox(height: 20),
-            Text('Tanggal pengantaran'),
-            SizedBox(height: 10),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 13),
+            FormGroup(
+              label: Text('Tanggal pengantaran'),
               child: TextFormField(
                 decoration: InputDecoration(
                   border: InputBorder.none,

@@ -68,6 +68,17 @@ class MainWidget extends StatelessWidget {
           useMaterial3: true,
           colorSchemeSeed: cPrimary,
           textTheme: GoogleFonts.montserratTextTheme(),
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey.shade300),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: cPrimary),
+            ),
+          ),
         ),
         debugShowCheckedModeBanner: false,
         routerConfig: Modular.routerConfig,
