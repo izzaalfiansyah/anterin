@@ -3,6 +3,7 @@ import 'package:anterin/components/hr.dart';
 import 'package:anterin/components/maps.dart';
 import 'package:anterin/constant.dart';
 import 'package:anterin/models/order.dart';
+import 'package:anterin/utils/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
@@ -68,8 +69,7 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                         setState(() {
                           isLoading = false;
                           distance = route.distance.toDouble();
-                          ongkir = distance / 1000 * 3000;
-                          ongkir = ((ongkir + 250) ~/ 500) * 500;
+                          ongkir = getOngkir(distance);
                           total = ongkir + adminPayment;
                         });
                       },
