@@ -12,7 +12,7 @@ final List<KategoriLayanan> kategoriLayanans = [
   KategoriLayanan(
     nama: 'Percetakan',
     icon: Icons.print,
-    path: '/percetakan',
+    path: '/coming_soon',
   ),
   KategoriLayanan(
     nama: 'Makan Minum',
@@ -22,7 +22,7 @@ final List<KategoriLayanan> kategoriLayanans = [
   // KategoriLayanan(
   //   nama: 'Belanja',
   //   icon: Icons.shopping_bag,
-  //   path: '/belanja',
+  //   path: '/coming_soon',
   // ),
   // KategoriLayanan(
   //   nama: 'Antar Barang',
@@ -32,6 +32,6 @@ final List<KategoriLayanan> kategoriLayanans = [
   // KategoriLayanan(
   //   nama: 'Laundry',
   //   icon: Icons.local_laundry_service,
-  //   path: '/laundry',
+  //   path: '/coming_soon',
   // ),
 ];
