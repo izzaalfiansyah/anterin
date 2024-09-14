@@ -148,11 +148,11 @@ class _PesananLainState extends State<PesananLain> {
                 BlocProvider.of<OrderBloc>(context).set(Order(
                   description: deskripsiController.text,
                   pickupAddress: '',
-                  pickupMapLat: '',
-                  pickupMapLng: '',
+                  pickupMapLat: 0,
+                  pickupMapLng: 0,
                   deliveryAddress: '',
-                  deliveryMapLat: '',
-                  deliveryMapLng: '',
+                  deliveryMapLat: 0,
+                  deliveryMapLng: 0,
                   schedule: schedule,
                 ));
 

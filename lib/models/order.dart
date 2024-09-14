@@ -4,11 +4,11 @@ class Order {
   String description;
   String? status;
   String pickupAddress;
-  String pickupMapLat;
-  String pickupMapLng;
+  num pickupMapLat;
+  num pickupMapLng;
   String deliveryAddress;
-  String deliveryMapLat;
-  String deliveryMapLng;
+  num deliveryMapLat;
+  num deliveryMapLng;
   String? photoDetail;
   String? photoDetailUrl;
   DateTime? schedule;

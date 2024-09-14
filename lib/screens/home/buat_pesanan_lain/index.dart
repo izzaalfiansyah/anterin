@@ -230,15 +230,14 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
 
                     order.deliveryAddress = deliveryAddressController.text;
                     order.deliveryMapLat =
-                        deliveryMapController.camera.center.latitude.toString();
-                    order.deliveryMapLng = deliveryMapController
-                        .camera.center.longitude
-                        .toString();
+                        deliveryMapController.camera.center.latitude;
+                    order.deliveryMapLng =
+                        deliveryMapController.camera.center.longitude;
                     order.pickupAddress = pickupAddressController.text;
                     order.pickupMapLat =
-                        pickupMapController.camera.center.latitude.toString();
+                        pickupMapController.camera.center.latitude;
                     order.pickupMapLng =
-                        pickupMapController.camera.center.longitude.toString();
+                        pickupMapController.camera.center.longitude;
 
                     BlocProvider.of<OrderBloc>(context).set(order);
 

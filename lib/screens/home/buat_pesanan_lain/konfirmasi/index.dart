@@ -56,12 +56,12 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                       center: LatLng(-8.160916921864638, 113.72277131655589),
                       route: MapRoute(
                         from: LatLng(
-                          num.parse(state!.pickupMapLat).toDouble(),
-                          num.parse(state.pickupMapLng).toDouble(),
+                          state!.pickupMapLat.toDouble(),
+                          state.pickupMapLng.toDouble(),
                         ),
                         to: LatLng(
-                          num.parse(state.deliveryMapLat).toDouble(),
-                          num.parse(state.deliveryMapLng).toDouble(),
+                          state.deliveryMapLat.toDouble(),
+                          state.deliveryMapLng.toDouble(),
                         ),
                       ),
                       onRouteFound: (route) {
