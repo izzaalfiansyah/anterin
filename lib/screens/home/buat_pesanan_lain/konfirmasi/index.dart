@@ -64,10 +64,10 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                           num.parse(state.deliveryMapLng).toDouble(),
                         ),
                       ),
-                      onRouteFound: (newDistance) {
+                      onRouteFound: (route) {
                         setState(() {
                           isLoading = false;
-                          distance = newDistance;
+                          distance = route.distance.toDouble();
                           ongkir = distance / 1000 * 3000;
                           ongkir = ((ongkir + 250) ~/ 500) * 500;
                           total = ongkir + adminPayment;

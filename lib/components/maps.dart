@@ -1,6 +1,6 @@
 import 'package:anterin/constant.dart';
+import 'package:anterin/utils/http.dart';
 import 'package:anterin/utils/locator.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,6 +11,28 @@ class MapRoute {
   final LatLng to;
 
   MapRoute({required this.from, required this.to});
+}
+
+class MapRouteResponse {
+  final num distance;
+  final num duration;
+  final List<LatLng> coordinates;
+
+  MapRouteResponse({
+    required this.distance,
+    required this.duration,
+    required this.coordinates,
+  });
+
+  factory MapRouteResponse.fromJSON(Map<String, dynamic> map) {
+    return MapRouteResponse(
+      distance: map['distance'],
+      duration: map['duration'],
+      coordinates: map['coordinates'].map<LatLng>((coordinate) {
+        return LatLng(coordinate['lat'], coordinate['lng']);
+      }).toList(),
+    );
+  }
 }
 
 class Maps extends StatefulWidget {
@@ -31,7 +53,7 @@ class Maps extends StatefulWidget {
   final double zoom;
   final void Function(MapCamera camera, bool hasGesture)? onPositionChanged;
   final void Function(Position position)? onGetCurrentPosition;
-  final void Function(double distance)? onRouteFound;
+  final void Function(MapRouteResponse route)? onRouteFound;
   final MapController? controller;
   final double size;
   final bool showMarker;
@@ -64,7 +86,7 @@ class _MapsState extends State<Maps> {
       controller = widget.controller!;
     }
 
-    getCurrentPosition();
+    // getCurrentPosition();
     getMapRoute();
 
     super.initState();
@@ -95,28 +117,27 @@ class _MapsState extends State<Maps> {
         final from = widget.route!.from;
         final to = widget.route!.to;
 
-        final res = await Dio().get(
-            'http://router.project-osrm.org/route/v1/driving/${from.longitude},${from.latitude};${to.longitude},${to.latitude}?geometries=geojson');
+        final res = await http().post('/map/route', data: {
+          'from_lat': from.latitude,
+          'from_lng': from.longitude,
+          'to_lat': to.latitude,
+          'to_lng': to.longitude,
+        });
 
-        final resRoute = res.data['routes'][0];
-
-        List<LatLng> points =
-            resRoute['geometry']['coordinates'].map<LatLng>((point) {
-          return LatLng(point[1], point[0]);
-        }).toList();
+        final route = MapRouteResponse.fromJSON(res.data);
 
         setState(() {
-          routesPoints = points;
+          routesPoints = route.coordinates;
         });
 
         if (widget.onRouteFound != null) {
-          widget.onRouteFound!(resRoute['distance']);
+          widget.onRouteFound!(route);
         }
 
         controller.move(to, widget.zoom);
       }
     } catch (e) {
-      // print(e);
+      print(e);
     }
   }
 
