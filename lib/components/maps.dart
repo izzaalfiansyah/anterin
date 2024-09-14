@@ -117,7 +117,8 @@ class _MapsState extends State<Maps> {
         final from = widget.route!.from;
         final to = widget.route!.to;
 
-        final res = await http().post('/map/route', data: {
+        final http = await httpInstance();
+        final res = await http.post('/map/route', data: {
           'from_lat': from.latitude,
           'from_lng': from.longitude,
           'to_lat': to.latitude,
@@ -137,7 +138,7 @@ class _MapsState extends State<Maps> {
         controller.move(to, widget.zoom);
       }
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 

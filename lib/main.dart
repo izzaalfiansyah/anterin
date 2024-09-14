@@ -1,3 +1,4 @@
+import 'package:anterin/blocs/auth.dart';
 import 'package:anterin/blocs/order.dart';
 import 'package:anterin/constant.dart';
 import 'package:anterin/utils/routes.dart';
@@ -14,7 +15,8 @@ class AppModule extends Module {
   @override
   void routes(RouteManager r) {
     for (var route in allRoutes) {
-      r.child(route.path, child: (context) => route.widget);
+      r.child(route.path,
+          child: (context) => route.widget, transition: route.transition);
     }
   }
 }
@@ -24,8 +26,17 @@ class MainWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => OrderBloc(),
+    Modular.setInitialRoute('/splash');
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => OrderBloc(),
+        ),
+        BlocProvider(
+          create: (context) => AuthBloc(),
+        ),
+      ],
       child: MaterialApp.router(
         title: 'Anterin',
         theme: ThemeData(
