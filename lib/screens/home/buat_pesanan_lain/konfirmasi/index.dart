@@ -16,8 +16,17 @@ class KonfirmasiPesananLainScreen extends StatefulWidget {
 }
 
 class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
+  bool isLoading = true;
+  double distance = 0;
+  double adminPayment = 1000;
+  double ongkir = 0;
+  double total = 0;
+
   @override
   void initState() {
+    setState(() {
+      total = adminPayment + ongkir;
+    });
     super.initState();
   }
 
@@ -55,6 +64,15 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                           num.parse(state.deliveryMapLng).toDouble(),
                         ),
                       ),
+                      onRouteFound: (newDistance) {
+                        setState(() {
+                          isLoading = false;
+                          distance = newDistance;
+                          ongkir = distance / 1000 * 3000;
+                          ongkir = ((ongkir + 250) ~/ 500) * 500;
+                          total = ongkir + adminPayment;
+                        });
+                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.all(20),
@@ -63,7 +81,7 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                         children: [
                           Text('Jarak:'),
                           Text(
-                            '676.3 m',
+                            '${distance.toStringAsFixed(1)} m',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
@@ -88,7 +106,7 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                       children: [
                         Text('Ongkos Kirim:'),
                         Text(
-                          'Rp. 15.000',
+                          'Rp. ${ongkir.toInt()}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -101,7 +119,7 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                       children: [
                         Text('Biaya Admin:'),
                         Text(
-                          'Rp. 2.000',
+                          'Rp. ${adminPayment.toInt()}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -123,7 +141,7 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                           ),
                         ),
                         Text(
-                          'Rp. 17.000',
+                          'Rp. ${total.toInt()}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: cPrimary,
@@ -140,11 +158,14 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                   style: FilledButton.styleFrom(
                     backgroundColor: cPrimary,
                   ),
-                  onPressed: () {
-                    final order = BlocProvider.of<OrderBloc>(context).state!;
+                  onPressed: isLoading
+                      ? null
+                      : () {
+                          final order =
+                              BlocProvider.of<OrderBloc>(context).state!;
 
-                    print(order.toJSON());
-                  },
+                          print(order.toJSON());
+                        },
                   child: Text('KONFIRMASI'),
                 ),
               )

@@ -20,6 +20,7 @@ class Maps extends StatefulWidget {
     this.zoom = 17,
     this.onPositionChanged,
     this.onGetCurrentPosition,
+    this.onRouteFound,
     this.controller,
     this.size = 250,
     this.showMarker = false,
@@ -30,6 +31,7 @@ class Maps extends StatefulWidget {
   final double zoom;
   final void Function(MapCamera camera, bool hasGesture)? onPositionChanged;
   final void Function(Position position)? onGetCurrentPosition;
+  final void Function(double distance)? onRouteFound;
   final MapController? controller;
   final double size;
   final bool showMarker;
@@ -96,19 +98,25 @@ class _MapsState extends State<Maps> {
         final res = await Dio().get(
             'http://router.project-osrm.org/route/v1/driving/${from.longitude},${from.latitude};${to.longitude},${to.latitude}?geometries=geojson');
 
+        final resRoute = res.data['routes'][0];
+
         List<LatLng> points =
-            res.data['routes'][0]['geometry']['coordinates'].map((point) {
+            resRoute['geometry']['coordinates'].map<LatLng>((point) {
           return LatLng(point[1], point[0]);
-        });
+        }).toList();
 
         setState(() {
           routesPoints = points;
         });
 
+        if (widget.onRouteFound != null) {
+          widget.onRouteFound!(resRoute['distance']);
+        }
+
         controller.move(to, widget.zoom);
       }
     } catch (e) {
-      //
+      // print(e);
     }
   }
 
