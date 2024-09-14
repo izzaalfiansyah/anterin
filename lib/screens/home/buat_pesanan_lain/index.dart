@@ -53,9 +53,8 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
                     SizedBox(height: 10),
                     Text(
                       'Deskripsi Orderan:',
-                      style: TextStyle(fontSize: 12),
                     ),
-                    SizedBox(height: 5),
+                    SizedBox(height: 10),
                     Text(state!.description),
                     SizedBox(height: 20),
                     Hr(
@@ -68,9 +67,8 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
                           ? [
                               Text(
                                 'Tanggal Pengantaran:',
-                                style: TextStyle(fontSize: 12),
                               ),
-                              SizedBox(height: 5),
+                              SizedBox(height: 10),
                               Text(formatDate(state.schedule!)),
                               SizedBox(height: 20),
                               Hr(
@@ -79,18 +77,16 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
                               SizedBox(height: 20),
                               Text(
                                 'Jam Pengantaran:',
-                                style: TextStyle(fontSize: 12),
                               ),
-                              SizedBox(height: 5),
+                              SizedBox(height: 10),
                               Text(formatTime(
                                   TimeOfDay.fromDateTime(state.schedule!))),
                             ]
                           : [
                               Text(
                                 'Waktu Pengantaran:',
-                                style: TextStyle(fontSize: 12),
                               ),
-                              SizedBox(height: 5),
+                              SizedBox(height: 10),
                               Text('Sekarang'),
                             ],
                     ),

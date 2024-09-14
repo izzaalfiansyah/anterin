@@ -79,7 +79,7 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Jarak:'),
+                          Text('Jarak Tempuh:'),
                           Text(
                             '${distance.toStringAsFixed(1)} m',
                             style: TextStyle(
@@ -166,7 +166,7 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
 
                           print(order.toJSON());
                         },
-                  child: Text('KONFIRMASI'),
+                  child: Text(isLoading ? 'MEMUAT' : 'KONFIRMASI'),
                 ),
               )
             ],
