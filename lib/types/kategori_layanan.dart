@@ -10,33 +10,28 @@ class KategoriLayanan {
 
 final List<KategoriLayanan> kategoriLayanans = [
   KategoriLayanan(
-    nama: 'Fotokopi',
+    nama: 'Percetakan',
     icon: Icons.print,
-    path: '/fotokopi',
+    path: '/percetakan',
   ),
   KategoriLayanan(
     nama: 'Makan Minum',
     icon: Icons.food_bank,
     path: '/makan_minum',
   ),
-  KategoriLayanan(
-    nama: 'Belanja',
-    icon: Icons.shopping_bag,
-    path: '/belanja',
-  ),
-  KategoriLayanan(
-    nama: 'Antar Barang',
-    icon: Icons.compare_arrows,
-    path: '/antar_barang',
-  ),
-  KategoriLayanan(
-    nama: 'Laundry',
-    icon: Icons.local_laundry_service,
-    path: '/laundry',
-  ),
-  KategoriLayanan(
-    nama: 'Lain-lain',
-    icon: Icons.question_mark,
-    path: '/lain_lain',
-  ),
+  // KategoriLayanan(
+  //   nama: 'Belanja',
+  //   icon: Icons.shopping_bag,
+  //   path: '/belanja',
+  // ),
+  // KategoriLayanan(
+  //   nama: 'Antar Barang',
+  //   icon: Icons.compare_arrows,
+  //   path: '/antar_barang',
+  // ),
+  // KategoriLayanan(
+  //   nama: 'Laundry',
+  //   icon: Icons.local_laundry_service,
+  //   path: '/laundry',
+  // ),
 ];

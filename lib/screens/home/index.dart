@@ -1,5 +1,7 @@
 import 'package:anterin/components/bottom_nav_bar.dart';
+import 'package:anterin/components/hr.dart';
 import 'package:anterin/constant.dart';
+import 'package:anterin/screens/home/pesanan_lain.dart';
 import 'package:anterin/types/kategori_layanan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -35,16 +37,18 @@ class _HomeScreenState extends State<HomeScreen> {
         leadingWidth: 0,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Modular.to.pushNamed('/saya');
+            },
             icon: Icon(
-              Icons.settings,
+              Icons.account_circle,
             ),
           ),
         ],
       ),
       body: ListView(
         children: [
-          SizedBox(height: 10),
+          SizedBox(height: 5),
           SingleChildScrollView(
             padding: EdgeInsets.symmetric(vertical: 10),
             scrollDirection: Axis.horizontal,
@@ -71,12 +75,29 @@ class _HomeScreenState extends State<HomeScreen> {
               }),
             ),
           ),
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 15,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: shadowSm,
+            ),
+            child: Text(
+              'Buat Pesanan',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           SizedBox(height: 10),
           GridView(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
+              crossAxisCount: 2,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
+              childAspectRatio: 1.3,
             ),
             padding: EdgeInsets.symmetric(horizontal: 10),
             shrinkWrap: true,
@@ -93,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5),
-                    // boxShadow: shadowSm,
+                    boxShadow: shadowSm,
                     // border: Border.all(color: Colors.grey.shade200),
                   ),
                   child: Column(
@@ -124,23 +145,36 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }),
           ),
-          SizedBox(height: 10),
-          Container(
-            margin: EdgeInsets.all(10),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              boxShadow: shadowSm,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image(
-                image: NetworkImage(
-                    'https://pbs.twimg.com/media/GD9LubabAAAILBa.jpg'),
-              ),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Hr(
+                    color: Colors.grey.shade300,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: Text(
+                    'LAINNYA',
+                    style: TextStyle(
+                      color: Colors.grey.shade400,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Hr(
+                    color: Colors.grey.shade300,
+                  ),
+                ),
+              ],
             ),
           ),
+          PesananLain(),
+          SizedBox(height: 10),
         ],
       ),
       bottomNavigationBar: BottomNavBar(),

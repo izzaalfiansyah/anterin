@@ -31,7 +31,7 @@ class _MakanMinumScreenState extends State<MakanMinumScreen> {
             child: TextFormField(
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Cari warung, restoran, atau cafe',
+                hintText: 'Ketik nama warung atau menu',
               ),
             ),
           ),

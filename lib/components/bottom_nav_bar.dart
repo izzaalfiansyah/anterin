@@ -71,8 +71,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         if (menu.onTap != null) {
           menu.onTap!(context);
         } else {
-          Modular.to.pushNamed('/saya');
-          // Navigator.of(context).pushNamed(menu.path);
+          Modular.to.pushNamed(menu.path);
         }
       },
     );
