@@ -91,7 +91,7 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                     ),
                     SizedBox(height: 20),
                     Text(
-                      'Alamat Titik Jemput:',
+                      'Alamat Penjemputan:',
                       style: TextStyle(fontSize: 12),
                     ),
                     SizedBox(height: 5),
@@ -102,7 +102,7 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                     ),
                     SizedBox(height: 20),
                     Text(
-                      'Alamat Titik Antar:',
+                      'Alamat Pengantaran:',
                       style: TextStyle(fontSize: 12),
                     ),
                     SizedBox(height: 5),
@@ -121,9 +121,20 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Rute pengantaran:'),
-                    SizedBox(height: 10),
+                    SizedBox(height: 20),
                     Maps(
-                        center: LatLng(-8.312402557917546, 113.40530296713514)),
+                      center: LatLng(-8.160916921864638, 113.72277131655589),
+                      route: MapRoute(
+                        from: LatLng(
+                          num.parse(state.pickupMapLat).toDouble(),
+                          num.parse(state.pickupMapLng).toDouble(),
+                        ),
+                        to: LatLng(
+                          num.parse(state.deliveryMapLat).toDouble(),
+                          num.parse(state.deliveryMapLng).toDouble(),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

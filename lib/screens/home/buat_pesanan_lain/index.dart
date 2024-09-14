@@ -5,13 +5,11 @@ import 'package:anterin/constant.dart';
 import 'package:anterin/models/order.dart';
 import 'package:anterin/screens/home/buat_pesanan_lain/konfirmasi/index.dart';
 import 'package:anterin/utils/dates.dart';
-import 'package:anterin/utils/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
 class BuatPesananLainScreen extends StatefulWidget {
@@ -25,47 +23,12 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
   TextEditingController pickupAddressController = TextEditingController();
   TextEditingController deliveryAddressController = TextEditingController();
 
-  Position myPosition = Position(
-    latitude: -8.15997175201657,
-    longitude: 113.72268022967968,
-    timestamp: DateTime.now(),
-    accuracy: 0,
-    altitude: 0,
-    altitudeAccuracy: 0,
-    heading: 0,
-    headingAccuracy: 0,
-    speed: 0,
-    speedAccuracy: 0,
-  );
-
   MapController pickupMapController = MapController();
   MapController deliveryMapController = MapController();
 
   @override
   void initState() {
-    getCurrentPosition();
     super.initState();
-  }
-
-  getCurrentPosition() async {
-    try {
-      final position = await getMyPosition();
-      setState(() {
-        myPosition = position;
-
-        pickupMapController.move(
-          LatLng(myPosition.latitude, myPosition.longitude),
-          18,
-        );
-
-        deliveryMapController.move(
-          LatLng(myPosition.latitude, myPosition.longitude),
-          18,
-        );
-      });
-    } catch (e) {
-      // print(e);
-    }
   }
 
   @override
@@ -189,8 +152,6 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
                         ),
                         SizedBox(height: 20),
                         Maps(
-                          center:
-                              LatLng(myPosition.latitude, myPosition.longitude),
                           controller: pickupMapController,
                           showMarker: true,
                         ),
@@ -254,8 +215,6 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
                         ),
                         SizedBox(height: 20),
                         Maps(
-                          center:
-                              LatLng(myPosition.latitude, myPosition.longitude),
                           controller: deliveryMapController,
                           showMarker: true,
                         ),
