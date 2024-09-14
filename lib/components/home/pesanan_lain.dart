@@ -37,7 +37,7 @@ class _PesananLainState extends State<PesananLain> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Pesanan'),
+            Text('Order'),
             SizedBox(height: 10),
             Container(
               decoration: BoxDecoration(
@@ -48,7 +48,7 @@ class _PesananLainState extends State<PesananLain> {
               child: TextFormField(
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Masukkan deskripsi pesanan',
+                  hintText: 'Masukkan deskripsi orderan',
                 ),
                 controller: deskripsiController,
                 maxLines: 4,
