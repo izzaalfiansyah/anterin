@@ -1,9 +1,14 @@
+import 'package:anterin/models/user.dart';
+import 'package:anterin/utils/device.dart';
 import 'package:anterin/utils/http.dart';
+import 'package:anterin/utils/token.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class AuthState {
   dynamic id;
-  dynamic user;
+  User? user;
 
   AuthState({
     this.id,
@@ -21,7 +26,7 @@ class AuthBloc extends Cubit<AuthState> {
 
       emit(AuthState(
         id: res.data['id'],
-        user: res.data['user'],
+        user: User.fromJSON(res.data),
       ));
 
       return true;
@@ -29,6 +34,46 @@ class AuthBloc extends Cubit<AuthState> {
       emit(AuthState());
 
       return false;
+    }
+  }
+
+  login({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final http = await httpInstance();
+
+      final deviceName = await getDeviceName();
+
+      final res = await http.post('/login', data: {
+        'email': email,
+        'password': password,
+        'device_name': deviceName,
+      });
+
+      await AuthToken.set(res.data);
+
+      await get();
+
+      Modular.to.navigate('/');
+    } catch (e) {
+      emit(AuthState());
+    }
+  }
+
+  logout() async {
+    try {
+      final http = await httpInstance();
+
+      await http.post('/logout');
+      await AuthToken.remove();
+
+      emit(AuthState());
+
+      Modular.to.navigate('/login');
+    } on DioException catch (e) {
+      print(e.response);
     }
   }
 }

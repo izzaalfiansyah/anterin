@@ -24,12 +24,12 @@ List<Route> allRoutes = [
   Route(
     path: '/login',
     widget: LoginScreen(),
-    transition: TransitionType.downToUp,
+    transition: TransitionType.fadeIn,
   ),
   Route(
     path: '/',
     widget: HomeScreen(),
-    transition: TransitionType.downToUp,
+    transition: TransitionType.fadeIn,
   ),
   Route(path: '/saya', widget: SayaScreen()),
   Route(path: '/makan_minum', widget: MakanMinumScreen()),

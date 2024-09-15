@@ -69,9 +69,7 @@ class MainWidget extends StatelessWidget {
           colorSchemeSeed: cPrimary,
           textTheme: GoogleFonts.montserratTextTheme(),
           inputDecorationTheme: InputDecorationTheme(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
+            border: OutlineInputBorder(),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey.shade300),
             ),
@@ -79,6 +77,13 @@ class MainWidget extends StatelessWidget {
               borderSide: BorderSide(color: cPrimary),
             ),
           ),
+          filledButtonTheme: FilledButtonThemeData(
+              style: FilledButton.styleFrom(
+            backgroundColor: cPrimary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+            ),
+          )),
         ),
         debugShowCheckedModeBanner: false,
         routerConfig: Modular.routerConfig,
