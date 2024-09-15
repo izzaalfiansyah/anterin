@@ -2,6 +2,7 @@ import 'package:anterin/screens/coming-soon/index.dart';
 import 'package:anterin/screens/home/index.dart';
 import 'package:anterin/screens/home/makan_minum/index.dart';
 import 'package:anterin/screens/login/index.dart';
+import 'package:anterin/screens/pesanan/index.dart';
 import 'package:anterin/screens/register/index.dart';
 import 'package:anterin/screens/saya/index.dart';
 import 'package:anterin/screens/splash/index.dart';
@@ -36,7 +37,8 @@ List<Route> allRoutes = [
     widget: HomeScreen(),
     transition: TransitionType.fadeIn,
   ),
-  Route(path: '/saya', widget: SayaScreen()),
   Route(path: '/makan_minum', widget: MakanMinumScreen()),
+  Route(path: '/pesanan', widget: PesananScreen()),
+  Route(path: '/saya', widget: SayaScreen()),
   Route(path: '/coming_soon', widget: ComingSoonScreen()),
 ];

@@ -1,8 +1,12 @@
+import 'package:anterin/blocs/loader.dart';
 import 'package:anterin/blocs/order.dart';
 import 'package:anterin/components/hr.dart';
 import 'package:anterin/components/maps.dart';
 import 'package:anterin/constant.dart';
 import 'package:anterin/models/order.dart';
+import 'package:anterin/models/payment.dart';
+import 'package:anterin/utils/dialog.dart';
+import 'package:anterin/utils/loader.dart';
 import 'package:anterin/utils/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,17 +21,19 @@ class KonfirmasiPesananLainScreen extends StatefulWidget {
 }
 
 class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
-  bool isLoading = true;
   double distance = 0;
-  double adminPayment = 1000;
-  double ongkir = 0;
+  double adminFee = 1000;
+  double shippingCost = 0;
   double total = 0;
 
   @override
   void initState() {
     setState(() {
-      total = adminPayment + ongkir;
+      total = adminFee + shippingCost;
     });
+
+    loaderInstance(context).on();
+
     super.initState();
   }
 
@@ -67,11 +73,11 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                       ),
                       onRouteFound: (route) {
                         setState(() {
-                          isLoading = false;
                           distance = route.distance.toDouble();
-                          ongkir = getOngkir(distance);
-                          total = ongkir + adminPayment;
+                          shippingCost = getOngkir(distance);
+                          total = shippingCost + adminFee;
                         });
+                        loaderInstance(context).off();
                       },
                     ),
                     Padding(
@@ -106,7 +112,7 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                       children: [
                         Text('Ongkos Kirim:'),
                         Text(
-                          'Rp. ${ongkir.toInt()}',
+                          'Rp. ${shippingCost.toInt()}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -119,7 +125,7 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                       children: [
                         Text('Biaya Admin:'),
                         Text(
-                          'Rp. ${adminPayment.toInt()}',
+                          'Rp. ${adminFee.toInt()}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -152,22 +158,43 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: FilledButton(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: cPrimary,
-                  ),
-                  onPressed: isLoading
-                      ? null
-                      : () {
-                          final order =
-                              BlocProvider.of<OrderBloc>(context).state!;
+              BlocBuilder<LoaderBloc, bool>(
+                builder: (context, state) {
+                  return Padding(
+                    padding: EdgeInsets.all(20),
+                    child: FilledButton(
+                      style: FilledButton.styleFrom(
+                        backgroundColor: cPrimary,
+                      ),
+                      onPressed: state
+                          ? null
+                          : () async {
+                              loaderInstance(context).on();
+                              final order =
+                                  BlocProvider.of<OrderBloc>(context).state!;
 
-                          print(order.toJSON());
-                        },
-                  child: Text(isLoading ? 'MEMUAT' : 'KONFIRMASI'),
-                ),
+                              Payment payment = Payment(
+                                amount: 0,
+                                shippingCost: shippingCost,
+                                adminFee: adminFee,
+                              );
+
+                              final res =
+                                  await BlocProvider.of<OrderBloc>(context)
+                                      .store(order, payment);
+
+                              showNotification(
+                                context,
+                                message: res.message,
+                                error: res.isError,
+                              );
+
+                              loaderInstance(context).off();
+                            },
+                      child: Text(state ? 'MEMUAT' : 'KONFIRMASI'),
+                    ),
+                  );
+                },
               )
             ],
           );
