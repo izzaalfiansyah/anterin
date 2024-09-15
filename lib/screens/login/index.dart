@@ -1,7 +1,9 @@
 import 'package:anterin/blocs/auth.dart';
+import 'package:anterin/blocs/loader.dart';
 import 'package:anterin/components/hr.dart';
 import 'package:anterin/constant.dart';
 import 'package:anterin/utils/dialog.dart';
+import 'package:anterin/utils/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -53,6 +55,7 @@ class LoginScreenState extends State<LoginScreen> {
                   controller: emailController,
                   decoration: InputDecoration(
                     hintText: 'Email',
+                    labelText: 'Email',
                   ),
                   validator: ValidationBuilder().email().required().build(),
                 ),
@@ -62,6 +65,7 @@ class LoginScreenState extends State<LoginScreen> {
                   obscureText: !showPassword,
                   decoration: InputDecoration(
                     hintText: 'Password',
+                    labelText: 'Password',
                     suffixIcon: IconButton(
                       icon: Icon(showPassword
                           ? Icons.visibility
@@ -76,20 +80,28 @@ class LoginScreenState extends State<LoginScreen> {
                   validator: ValidationBuilder().required().build(),
                 ),
                 SizedBox(height: 40),
-                FilledButton(
-                  onPressed: () async {
-                    if (loginForm.currentState!.validate()) {
-                      await BlocProvider.of<AuthBloc>(context).login(
-                        email: emailController.text,
-                        password: passwordController.text,
-                      );
-                    }
+                BlocBuilder<LoaderBloc, bool>(
+                  builder: (context, state) {
+                    return FilledButton(
+                      onPressed: state
+                          ? null
+                          : () async {
+                              if (loginForm.currentState!.validate()) {
+                                loaderInstance(context).on();
+                                await BlocProvider.of<AuthBloc>(context).login(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                );
+                                loaderInstance(context).off();
+                              }
+                            },
+                      style: FilledButton.styleFrom(
+                        backgroundColor: cPrimary,
+                        fixedSize: Size.fromWidth(size.width),
+                      ),
+                      child: Text('LOGIN'),
+                    );
                   },
-                  style: FilledButton.styleFrom(
-                    backgroundColor: cPrimary,
-                    fixedSize: Size.fromWidth(size.width),
-                  ),
-                  child: Text('LOGIN'),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
@@ -117,7 +129,7 @@ class LoginScreenState extends State<LoginScreen> {
                 ),
                 FilledButton(
                   onPressed: () {
-                    Modular.to.navigate('/');
+                    Modular.to.pushNamed('/register');
                   },
                   style: FilledButton.styleFrom(
                     backgroundColor: Colors.white,

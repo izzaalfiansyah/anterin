@@ -1,4 +1,5 @@
 import 'package:anterin/blocs/auth.dart';
+import 'package:anterin/blocs/loader.dart';
 import 'package:anterin/blocs/order.dart';
 import 'package:anterin/constant.dart';
 import 'package:anterin/utils/routes.dart';
@@ -35,6 +36,9 @@ class MainWidget extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AuthBloc(),
+        ),
+        BlocProvider(
+          create: (context) => LoaderBloc(),
         ),
       ],
       child: MaterialApp.router(
@@ -74,7 +78,7 @@ class MainWidget extends StatelessWidget {
               borderSide: BorderSide(color: Colors.grey.shade300),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: cPrimary),
+              borderSide: BorderSide(color: cPrimary, width: 2),
             ),
           ),
           filledButtonTheme: FilledButtonThemeData(

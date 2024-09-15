@@ -62,6 +62,34 @@ class AuthBloc extends Cubit<AuthState> {
     }
   }
 
+  Future<String?> register({
+    required String name,
+    required String email,
+    required String phone,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    try {
+      final http = await httpInstance();
+
+      final res = await http.post('/register', data: {
+        'name': name,
+        'email': email,
+        'phone': phone,
+        'password': password,
+        'password_confirmation': passwordConfirmation,
+      });
+
+      Modular.to.pop();
+
+      return res.data['message'] as String;
+    } catch (e) {
+      emit(AuthState());
+
+      return null;
+    }
+  }
+
   logout() async {
     try {
       final http = await httpInstance();
