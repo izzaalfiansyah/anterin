@@ -1,4 +1,5 @@
 import 'package:anterin/models/user.dart';
+import 'package:anterin/types/api_response.dart';
 import 'package:anterin/utils/device.dart';
 import 'package:anterin/utils/http.dart';
 import 'package:anterin/utils/token.dart';
@@ -37,7 +38,7 @@ class AuthBloc extends Cubit<AuthState> {
     }
   }
 
-  login({
+  Future<ApiResponse> login({
     required String email,
     required String password,
   }) async {
@@ -57,12 +58,17 @@ class AuthBloc extends Cubit<AuthState> {
       await get();
 
       Modular.to.navigate('/');
+
+      return ApiResponse(message: 'Berhasil login');
+    } on DioException catch (e) {
+      return ApiResponse(message: e.response!.data['message'], isError: true);
     } catch (e) {
       emit(AuthState());
+      return ApiResponse(message: 'Terjadi kesalahan', isError: true);
     }
   }
 
-  Future<String?> register({
+  Future<ApiResponse> register({
     required String name,
     required String email,
     required String phone,
@@ -82,11 +88,11 @@ class AuthBloc extends Cubit<AuthState> {
 
       Modular.to.pop();
 
-      return res.data['message'] as String;
+      return ApiResponse(message: res.data['message']);
+    } on DioException catch (e) {
+      return ApiResponse(message: e.response!.data['message'], isError: true);
     } catch (e) {
-      emit(AuthState());
-
-      return null;
+      return ApiResponse(message: 'Terjadi kesalahan', isError: true);
     }
   }
 
@@ -100,8 +106,8 @@ class AuthBloc extends Cubit<AuthState> {
       emit(AuthState());
 
       Modular.to.navigate('/login');
-    } on DioException catch (e) {
-      print(e.response);
+    } catch (e) {
+      // print(e);
     }
   }
 }

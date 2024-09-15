@@ -175,7 +175,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                             : () async {
                                 if (registerForm.currentState!.validate()) {
                                   loaderInstance(context).on();
-                                  final response =
+                                  final res =
                                       await BlocProvider.of<AuthBloc>(context)
                                           .register(
                                     name: nameController.text,
@@ -187,10 +187,11 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   );
                                   loaderInstance(context).off();
 
-                                  if (response != null) {
-                                    showNotification(context,
-                                        message: response);
-                                  }
+                                  showNotification(
+                                    context,
+                                    message: res.message,
+                                    error: res.isError,
+                                  );
                                 }
                               },
                         style: FilledButton.styleFrom(

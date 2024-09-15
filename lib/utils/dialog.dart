@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-showNotification(BuildContext context, {required String message}) {
+showNotification(BuildContext context,
+    {required String message, bool error = false}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message),
+      backgroundColor: error ? Colors.deepOrange : null,
     ),
   );
 }

@@ -43,7 +43,9 @@ class User {
       districtId: map['district_id'],
       address: map['address'],
       role: map['role'],
-      emailVerifiedAt: DateTime.parse(map['email_verified_at']),
+      emailVerifiedAt: map['email_verified_at'] != null
+          ? DateTime.parse(map['email_verified_at'])
+          : null,
     );
   }
 
