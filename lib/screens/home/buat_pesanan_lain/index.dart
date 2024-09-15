@@ -11,7 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:latlong2/latlong.dart';
 
 class BuatPesananLainScreen extends StatefulWidget {
   const BuatPesananLainScreen({super.key});
@@ -27,8 +26,24 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
   MapController pickupMapController = MapController();
   MapController deliveryMapController = MapController();
 
+  late Order order;
+
   @override
   void initState() {
+    order = BlocProvider.of<OrderBloc>(context).state!;
+
+    placemarkFromCoordinates(
+            mapsDefaultCenter.latitude, mapsDefaultCenter.longitude)
+        .then((placemarks) {
+      final placemark = placemarks[0];
+      final address =
+          '${placemark.street}, ${placemark.subLocality}, ${placemark.locality}, ${placemark.subAdministrativeArea}';
+
+      setState(() {
+        order.pickupMapAddress = address;
+        order.deliveryMapAddress = address;
+      });
+    });
     super.initState();
   }
 
@@ -107,38 +122,77 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        FormGroup(
-                          label: Text('Titik Jemput'),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Alamat',
-                              suffixIcon: IconButton(
-                                onPressed: () async {
-                                  final locations = await locationFromAddress(
-                                      pickupAddressController.text);
+                        // FormGroup(
+                        //   label: Text('Titik Jemput'),
+                        //   child: TextFormField(
+                        //     decoration: InputDecoration(
+                        //       border: InputBorder.none,
+                        //       hintText: 'Alamat',
+                        //       suffixIcon: IconButton(
+                        //         onPressed: () async {
+                        //           try {
+                        //             final locations = await locationFromAddress(
+                        //                 pickupAddressController.text);
 
-                                  pickupMapController.move(
-                                    LatLng(
-                                      locations[0].latitude,
-                                      locations[0].longitude,
-                                    ),
-                                    18,
-                                  );
-                                },
-                                icon: Icon(
-                                  Icons.search,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
-                            controller: pickupAddressController,
-                          ),
-                        ),
-                        SizedBox(height: 20),
+                        //             pickupMapController.move(
+                        //               LatLng(
+                        //                 locations[0].latitude,
+                        //                 locations[0].longitude,
+                        //               ),
+                        //               18,
+                        //             );
+                        //           } catch (e) {
+                        //             showNotification(context,
+                        //                 message: 'Lokasi tidak ditemukan');
+                        //           }
+                        //         },
+                        //         icon: Icon(
+                        //           Icons.search,
+                        //           color: Colors.grey,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     controller: pickupAddressController,
+                        //   ),
+                        // ),
+                        Text('Titik Jemput:'),
+                        SizedBox(height: 10),
                         Maps(
                           controller: pickupMapController,
                           showMarker: true,
+                          onPositionChanged: (event, point) async {
+                            final placemarks = await placemarkFromCoordinates(
+                                point.latitude, point.longitude);
+                            final placemark = placemarks[0];
+
+                            setState(() {
+                              order.pickupMapAddress =
+                                  '${placemark.street}, ${placemark.subLocality}, ${placemark.locality}, ${placemark.subAdministrativeArea}';
+                            });
+                          },
+                          // getCurrentPosition: true,
+                        ),
+                        order.pickupMapAddress != null
+                            ? Container(
+                                padding: EdgeInsets.symmetric(vertical: 16),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom:
+                                        BorderSide(color: Colors.grey.shade300),
+                                  ),
+                                ),
+                                child: Text(order.pickupMapAddress!),
+                              )
+                            : SizedBox(),
+                        SizedBox(height: 20),
+                        FormGroup(
+                          label: Text('Alamat Lengkap:'),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Masukkan Alamat',
+                            ),
+                            controller: pickupAddressController,
+                          ),
                         ),
                       ],
                     ),
@@ -158,38 +212,44 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        FormGroup(
-                          label: Text('Titik Antar'),
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Alamat',
-                              suffixIcon: IconButton(
-                                onPressed: () async {
-                                  final locations = await locationFromAddress(
-                                      deliveryAddressController.text);
-
-                                  deliveryMapController.move(
-                                    LatLng(
-                                      locations[0].latitude,
-                                      locations[0].longitude,
-                                    ),
-                                    18,
-                                  );
-                                },
-                                icon: Icon(
-                                  Icons.search,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
-                            controller: deliveryAddressController,
-                          ),
-                        ),
-                        SizedBox(height: 20),
+                        Text('Titik Antar'),
+                        SizedBox(height: 10),
                         Maps(
                           controller: deliveryMapController,
                           showMarker: true,
+                          onPositionChanged: (event, point) async {
+                            final placemarks = await placemarkFromCoordinates(
+                                point.latitude, point.longitude);
+                            final placemark = placemarks[0];
+
+                            setState(() {
+                              order.deliveryMapAddress =
+                                  '${placemark.street}, ${placemark.subLocality}, ${placemark.locality}, ${placemark.subAdministrativeArea}';
+                            });
+                          },
+                          // getCurrentPosition: true,
+                        ),
+                        order.deliveryMapAddress != null
+                            ? Container(
+                                padding: EdgeInsets.symmetric(vertical: 16),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom:
+                                        BorderSide(color: Colors.grey.shade300),
+                                  ),
+                                ),
+                                child: Text(order.deliveryMapAddress!),
+                              )
+                            : SizedBox(),
+                        SizedBox(height: 20),
+                        FormGroup(
+                          label: Text('Alamat Lengkap:'),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Masukkan Alamat',
+                            ),
+                            controller: deliveryAddressController,
+                          ),
                         ),
                       ],
                     ),
@@ -203,18 +263,18 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
                     backgroundColor: cPrimary,
                   ),
                   onPressed: () {
-                    final order = BlocProvider.of<OrderBloc>(context).state!;
-
-                    order.deliveryAddress = deliveryAddressController.text;
-                    order.deliveryMapLat =
-                        deliveryMapController.camera.center.latitude;
-                    order.deliveryMapLng =
-                        deliveryMapController.camera.center.longitude;
-                    order.pickupAddress = pickupAddressController.text;
-                    order.pickupMapLat =
-                        pickupMapController.camera.center.latitude;
-                    order.pickupMapLng =
-                        pickupMapController.camera.center.longitude;
+                    setState(() {
+                      order.deliveryAddress = deliveryAddressController.text;
+                      order.deliveryMapLat =
+                          deliveryMapController.camera.center.latitude;
+                      order.deliveryMapLng =
+                          deliveryMapController.camera.center.longitude;
+                      order.pickupAddress = pickupAddressController.text;
+                      order.pickupMapLat =
+                          pickupMapController.camera.center.latitude;
+                      order.pickupMapLng =
+                          pickupMapController.camera.center.longitude;
+                    });
 
                     BlocProvider.of<OrderBloc>(context).set(order);
 

@@ -82,14 +82,8 @@ class _PesananLainState extends State<PesananLain> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 20),
-                      Text('Waktu pengantaran'),
-                      SizedBox(height: 10),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade300),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.symmetric(horizontal: 13),
+                      FormGroup(
+                        label: Text('Waktu pengantaran'),
                         child: TextFormField(
                           decoration: InputDecoration(
                             border: InputBorder.none,

@@ -16,7 +16,7 @@ class FormGroup extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         label ?? SizedBox(),
-        SizedBox(height: 10),
+        label != null ? SizedBox(height: 10) : SizedBox(),
         child,
       ],
     );

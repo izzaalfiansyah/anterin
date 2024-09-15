@@ -4,9 +4,11 @@ class Order {
   String description;
   String? status;
   String pickupAddress;
+  String? pickupMapAddress;
   num pickupMapLat;
   num pickupMapLng;
   String deliveryAddress;
+  String? deliveryMapAddress;
   num deliveryMapLat;
   num deliveryMapLng;
   DateTime? schedule;
@@ -20,9 +22,11 @@ class Order {
     required this.description,
     this.status,
     required this.pickupAddress,
+    this.pickupMapAddress,
     required this.pickupMapLat,
     required this.pickupMapLng,
     required this.deliveryAddress,
+    this.deliveryMapAddress,
     required this.deliveryMapLat,
     required this.deliveryMapLng,
     this.schedule,
@@ -38,9 +42,11 @@ class Order {
       description: map['description'],
       status: map['status'],
       pickupAddress: map['pickup_address'],
+      pickupMapAddress: map['pickup_map_address'],
       pickupMapLat: map['pickup_map_lat'],
       pickupMapLng: map['pickup_map_lng'],
       deliveryAddress: map['deliveryAddress'],
+      deliveryMapAddress: map['delivery_map_address'],
       deliveryMapLat: map['delivery_map_lat'],
       deliveryMapLng: map['delivery_map_lng'],
       schedule: map['schedule'],
@@ -57,9 +63,11 @@ class Order {
       'description': description,
       'status': status,
       'pickup_address': pickupAddress,
+      'pickup_map_address': pickupMapAddress,
       'pickup_map_lat': pickupMapLat,
       'pickup_map_lng': pickupMapLng,
       'deliveryAddress': deliveryAddress,
+      'delivery_map_address': deliveryMapAddress,
       'delivery_map_lat': deliveryMapLat,
       'delivery_map_lng': deliveryMapLng,
       'schedule': schedule,

@@ -6,6 +6,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
+final mapsDefaultCenter = LatLng(-8.15997175201657, 113.72268022967968);
+
 class MapRoute {
   final LatLng from;
   final LatLng to;
@@ -47,26 +49,30 @@ class Maps extends StatefulWidget {
     this.size = 250,
     this.showMarker = false,
     this.route,
+    this.getCurrentPosition = false,
   });
 
   final LatLng? center;
   final double zoom;
-  final void Function(MapCamera camera, bool hasGesture)? onPositionChanged;
+  final void Function(PointerUpEvent event, LatLng point)? onPositionChanged;
   final void Function(Position position)? onGetCurrentPosition;
   final void Function(MapRouteResponse route)? onRouteFound;
   final MapController? controller;
   final double size;
   final bool showMarker;
   final MapRoute? route;
+  final bool getCurrentPosition;
 
   @override
   State<Maps> createState() => _MapsState();
 }
 
 class _MapsState extends State<Maps> {
+  bool isLoading = false;
+
   Position currentPosition = Position(
-    latitude: -8.15997175201657,
-    longitude: 113.72268022967968,
+    latitude: mapsDefaultCenter.latitude,
+    longitude: mapsDefaultCenter.longitude,
     timestamp: DateTime.now(),
     accuracy: 0,
     altitude: 0,
@@ -82,17 +88,30 @@ class _MapsState extends State<Maps> {
 
   @override
   void initState() {
+    setState(() {
+      isLoading = true;
+    });
+
     if (widget.controller != null) {
       controller = widget.controller!;
     }
 
-    // getCurrentPosition();
-    getMapRoute();
+    (() async {
+      if (widget.getCurrentPosition) {
+        await getCurrentPosition();
+      }
+
+      await getMapRoute();
+
+      setState(() {
+        isLoading = false;
+      });
+    })();
 
     super.initState();
   }
 
-  getCurrentPosition() async {
+  Future getCurrentPosition() async {
     try {
       final position = await getMyPosition();
       setState(() {
@@ -111,7 +130,7 @@ class _MapsState extends State<Maps> {
     }
   }
 
-  getMapRoute() async {
+  Future getMapRoute() async {
     try {
       if (widget.route != null) {
         final from = widget.route!.from;
@@ -154,7 +173,8 @@ class _MapsState extends State<Maps> {
               initialCenter: widget.center ??
                   LatLng(currentPosition.latitude, currentPosition.longitude),
               initialZoom: widget.zoom,
-              onPositionChanged: widget.onPositionChanged,
+              // onPositionChanged: widget.onPositionChanged,
+              onPointerUp: widget.onPositionChanged,
             ),
             children: [
               TileLayer(
@@ -201,6 +221,12 @@ class _MapsState extends State<Maps> {
                 child: Center(
                   child: defaultMarker(),
                 ),
+              )
+            : SizedBox(),
+        isLoading
+            ? Container(
+                height: widget.size,
+                color: Colors.grey.shade200,
               )
             : SizedBox(),
       ],

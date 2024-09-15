@@ -73,6 +73,8 @@ class MainWidget extends StatelessWidget {
           colorSchemeSeed: cPrimary,
           textTheme: GoogleFonts.montserratTextTheme(),
           inputDecorationTheme: InputDecorationTheme(
+            isDense: true,
+            contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 13),
             border: OutlineInputBorder(),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: Colors.grey.shade300),
