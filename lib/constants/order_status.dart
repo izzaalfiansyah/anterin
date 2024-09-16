@@ -10,8 +10,8 @@ class OrderStatus {
 
 List<OrderStatus> orderStatus = [
   OrderStatus(label: 'pending', text: 'Menunggu'),
-  OrderStatus(label: 'ready', text: 'Disiapkan'),
+  OrderStatus(label: 'canceled', text: 'Dibatalkan'),
+  OrderStatus(label: 'ready', text: 'Dikonfirmasi'),
   OrderStatus(label: 'process', text: 'Proses'),
   OrderStatus(label: 'completed', text: 'Selesai'),
-  OrderStatus(label: 'canceled', text: 'Dibatalkan'),
 ];

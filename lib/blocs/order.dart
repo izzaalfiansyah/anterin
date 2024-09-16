@@ -1,3 +1,4 @@
+import 'package:anterin/constants/list_pagination.dart';
 import 'package:anterin/models/order.dart';
 import 'package:anterin/models/payment.dart';
 import 'package:anterin/constants/api_response.dart';
@@ -13,16 +14,45 @@ class OrderBloc extends Cubit<Order?> {
     emit(order);
   }
 
-  Future<List<Order>> getList() async {
+  Future<ListPagination<Order>> getList({
+    String status = 'pending',
+    int page = 1,
+  }) async {
     try {
       final http = await httpInstance();
-      final res = await http.get('/order');
+      final res = await http.get('/order', queryParameters: {
+        'status': status,
+        'page': page,
+      });
 
-      return List.from(res.data['data']).map<Order>((item) {
+      final orders = List.from(res.data['data']).map<Order>((item) {
         return Order.fromJSON(item);
       }).toList();
+
+      return ListPagination<Order>(
+        currentPage: res.data['current_page'],
+        data: orders,
+        perPage: res.data['per_page'],
+        total: res.data['total'],
+        to: res.data['to'],
+      );
     } catch (e) {
-      return [];
+      return ListPagination(
+        data: [],
+      );
+    }
+  }
+
+  Future<Order?> getOne(dynamic id) async {
+    try {
+      final http = await httpInstance();
+      final res = await http.get('/order/$id');
+
+      final order = Order.fromJSON(res.data);
+
+      return order;
+    } catch (e) {
+      return null;
     }
   }
 

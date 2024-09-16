@@ -1,4 +1,5 @@
 class Order {
+  dynamic id;
   dynamic userId;
   dynamic courierId;
   String description;
@@ -18,6 +19,7 @@ class Order {
   dynamic payment;
 
   Order({
+    this.id,
     this.userId,
     this.courierId,
     required this.description,
@@ -39,6 +41,7 @@ class Order {
 
   factory Order.fromJSON(Map<String, dynamic> map) {
     return Order(
+      id: map['id'],
       userId: map['user_id'],
       courierId: map['courier_id'],
       description: map['description'],
@@ -62,6 +65,7 @@ class Order {
 
   Map<String, dynamic> toJSON() {
     return {
+      'id': id,
       'user_id': userId,
       'courier_id': courierId,
       'description': description,

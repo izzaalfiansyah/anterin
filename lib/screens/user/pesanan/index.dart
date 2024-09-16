@@ -1,15 +1,16 @@
 import 'package:anterin/blocs/loader.dart';
 import 'package:anterin/blocs/order.dart';
 import 'package:anterin/components/bottom_nav_bar.dart';
-import 'package:anterin/components/hr.dart';
 import 'package:anterin/components/loading.dart';
 import 'package:anterin/constants/app.dart';
 import 'package:anterin/constants/order_status.dart';
 import 'package:anterin/models/order.dart';
+import 'package:anterin/screens/user/pesanan/detail/index.dart';
 import 'package:anterin/utils/dates.dart';
 import 'package:anterin/utils/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class PesananScreen extends StatefulWidget {
   const PesananScreen({super.key});
@@ -31,10 +32,12 @@ class _PesananScreenState extends State<PesananScreen> {
 
   getOrders() async {
     await loaderInstance(context).on();
-    final items = await orderBloc.getList();
+    final items = await orderBloc.getList(
+      status: selectedStatus,
+    );
 
     setState(() {
-      orders = items;
+      orders = items.data;
     });
     await loaderInstance(context).off();
   }
@@ -80,6 +83,7 @@ class _PesananScreenState extends State<PesananScreen> {
                                   setState(() {
                                     selectedStatus = status.label;
                                   });
+                                  getOrders();
                                 },
                                 child: Text(
                                   status.text.toUpperCase(),
@@ -108,7 +112,7 @@ class _PesananScreenState extends State<PesananScreen> {
 
           if (orders.isEmpty) {
             return Center(
-              child: Text('Anda belum membuat orderan.'),
+              child: Text('Pesanan belum tersedia.'),
             );
           }
 
@@ -119,70 +123,77 @@ class _PesananScreenState extends State<PesananScreen> {
                 children: List.generate(orders.length, (index) {
                   final order = orders[index];
 
-                  return Container(
-                    padding: EdgeInsets.all(20),
-                    margin: EdgeInsets.only(bottom: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: shadowSm,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${formatDate(order.schedule!)} ${formatTime(TimeOfDay.fromDateTime(order.schedule!))}",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 5),
-                            RichText(
-                              text: TextSpan(
-                                style: Theme.of(context).textTheme.bodySmall,
-                                children: [
-                                  TextSpan(text: 'Jarak tempuh: '),
-                                  TextSpan(
-                                    text: '${order.distance}m',
-                                    style: TextStyle(
-                                      color: Colors.deepOrange,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 15),
-                          child: Hr(
-                            color: Colors.grey.shade200,
+                  return GestureDetector(
+                    onTap: () {
+                      Modular.to.push(
+                        MaterialPageRoute(
+                          builder: (context) => PesananDetailScreen(
+                            orderId: order.id,
                           ),
                         ),
-                        SizedBox(height: 10),
-                        Text(order.description),
-                        SizedBox(height: 10),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [
-                        //     TextButton(
-                        //       onPressed: () {},
-                        //       child: Text('Lihat Detail'.toUpperCase()),
-                        //     ),
-                        //     TextButton(
-                        //       onPressed: () {
-                        //         print(order.courier);
-                        //       },
-                        //       child: Text('Hubungi Kurir'.toUpperCase()),
-                        //     ),
-                        //   ],
-                        // ),
-                      ],
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(30),
+                      margin: EdgeInsets.only(bottom: 10),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: shadowSm,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.circle_outlined,
+                            color: cPrimary,
+                            size: 14,
+                          ),
+                          SizedBox(width: 30),
+                          Expanded(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                RichText(
+                                  text: TextSpan(
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                    children: [
+                                      TextSpan(
+                                        text: "${order.description} ",
+                                      ),
+                                      TextSpan(
+                                        text: ' (${order.distance}m)',
+                                        style: TextStyle(
+                                          color: Colors.orange,
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${formatDate(order.schedule!)} ${formatTime(TimeOfDay.fromDateTime(order.schedule!))}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                            color: Colors.grey,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 }),
