@@ -22,7 +22,7 @@ class OrderBloc extends Cubit<Order?> {
       final res = await http.post('/order', data: data);
 
       Modular.to.popUntil((route) => route.isFirst);
-      Modular.to.pushNamed('/');
+      Modular.to.pushNamed('/pesanan');
 
       return ApiResponse(message: res.data['message']);
     } on DioException catch (e) {

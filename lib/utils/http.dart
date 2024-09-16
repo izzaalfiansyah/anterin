@@ -13,7 +13,7 @@ Future<Dio> httpInstance() async {
   }
 
   final options = BaseOptions(
-    baseUrl: 'http://192.168.189.111:8000',
+    baseUrl: 'http://localhost:8000',
     headers: headers,
   );
 

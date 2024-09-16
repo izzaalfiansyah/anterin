@@ -29,7 +29,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   final List<BottomNavBarItem> menus = [
     BottomNavBarItem(
       icon: Icons.home,
-      path: '/',
+      path: '/home',
       label: 'Beranda',
       onTap: (context) {
         Modular.to.popUntil((route) => route.isFirst);

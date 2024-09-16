@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     BlocProvider.of<AuthBloc>(context).get().then((isLogin) {
       if (isLogin) {
-        Modular.to.navigate('/');
+        Modular.to.navigate('/home');
         return;
       }
 

@@ -175,6 +175,7 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
                         order.pickupMapAddress != null
                             ? Container(
                                 padding: EdgeInsets.symmetric(vertical: 16),
+                                width: double.infinity,
                                 decoration: BoxDecoration(
                                   border: Border(
                                     bottom:
@@ -231,6 +232,7 @@ class _BuatPesananLainScreenState extends State<BuatPesananLainScreen> {
                         ),
                         order.deliveryMapAddress != null
                             ? Container(
+                                width: double.infinity,
                                 padding: EdgeInsets.symmetric(vertical: 16),
                                 decoration: BoxDecoration(
                                   border: Border(

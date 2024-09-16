@@ -11,6 +11,7 @@ class Order {
   String? deliveryMapAddress;
   num deliveryMapLat;
   num deliveryMapLng;
+  num distance;
   DateTime? schedule;
   String? reason;
   dynamic courier;
@@ -23,12 +24,13 @@ class Order {
     this.status,
     required this.pickupAddress,
     this.pickupMapAddress,
-    required this.pickupMapLat,
-    required this.pickupMapLng,
+    this.pickupMapLat = 0,
+    this.pickupMapLng = 0,
     required this.deliveryAddress,
     this.deliveryMapAddress,
-    required this.deliveryMapLat,
-    required this.deliveryMapLng,
+    this.deliveryMapLat = 0,
+    this.deliveryMapLng = 0,
+    this.distance = 0,
     this.schedule,
     this.reason,
     this.courier,
@@ -49,6 +51,7 @@ class Order {
       deliveryMapAddress: map['delivery_map_address'],
       deliveryMapLat: map['delivery_map_lat'],
       deliveryMapLng: map['delivery_map_lng'],
+      distance: map['distance'],
       schedule: map['schedule'],
       reason: map['reason'],
       courier: map['courier'],
@@ -70,6 +73,7 @@ class Order {
       'delivery_map_address': deliveryMapAddress,
       'delivery_map_lat': deliveryMapLat,
       'delivery_map_lng': deliveryMapLng,
+      'distance': distance,
       'schedule': schedule?.toIso8601String(),
       'reason': reason,
       'courier': courier,

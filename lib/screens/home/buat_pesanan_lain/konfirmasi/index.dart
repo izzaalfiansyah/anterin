@@ -170,8 +170,11 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
                           ? null
                           : () async {
                               loaderInstance(context).on();
+
                               final order =
                                   BlocProvider.of<OrderBloc>(context).state!;
+
+                              order.distance = distance;
 
                               Payment payment = Payment(
                                 amount: 0,

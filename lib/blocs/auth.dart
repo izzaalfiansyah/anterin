@@ -57,7 +57,7 @@ class AuthBloc extends Cubit<AuthState> {
 
       await get();
 
-      Modular.to.navigate('/');
+      Modular.to.navigate('/home');
 
       return ApiResponse(message: 'Berhasil login');
     } on DioException catch (e) {

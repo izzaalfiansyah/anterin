@@ -33,7 +33,7 @@ List<Route> allRoutes = [
     widget: RegisterScreen(),
   ),
   Route(
-    path: '/',
+    path: '/home',
     widget: HomeScreen(),
     transition: TransitionType.fadeIn,
   ),
