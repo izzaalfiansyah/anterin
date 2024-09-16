@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const cPrimary = Color.fromARGB(255, 35, 139, 224);
+const cPrimary = Color.fromRGBO(6, 118, 255, 1);
 // const cPrimary = Colors.red;
 
 final shadowSm = [

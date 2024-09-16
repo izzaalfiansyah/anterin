@@ -80,7 +80,7 @@ class MainWidget extends StatelessWidget {
               borderSide: BorderSide(color: Colors.grey.shade300),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: cPrimary, width: 2),
+              borderSide: BorderSide(color: cPrimary, width: 1),
             ),
           ),
           filledButtonTheme: FilledButtonThemeData(

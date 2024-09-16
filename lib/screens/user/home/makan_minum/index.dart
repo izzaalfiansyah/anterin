@@ -14,30 +14,38 @@ class _MakanMinumScreenState extends State<MakanMinumScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Makan & Minum'),
-      ),
-      body: ListView(
-        padding: EdgeInsets.all(10),
-        children: [
-          SizedBox(height: 10),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(
-                color: Colors.grey.shade300,
-              ),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 13),
-            child: TextFormField(
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(80),
+          child: Container(
+            padding: EdgeInsets.all(20),
+            child: TextField(
               decoration: InputDecoration(
-                border: InputBorder.none,
+                fillColor: Colors.white,
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide.none,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide.none,
+                ),
                 hintText: 'Ketik nama warung atau menu',
               ),
             ),
           ),
+        ),
+      ),
+      body: ListView(
+        children: [
           SizedBox(height: 20),
           ListView.builder(
             shrinkWrap: true,
+            padding: EdgeInsets.symmetric(horizontal: 10),
             physics: NeverScrollableScrollPhysics(),
             itemCount: 8,
             itemBuilder: (context, index) {

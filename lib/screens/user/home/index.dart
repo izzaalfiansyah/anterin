@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Container(
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: colors[index],
+                          color: cPrimary,
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
