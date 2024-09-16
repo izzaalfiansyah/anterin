@@ -13,6 +13,19 @@ class OrderBloc extends Cubit<Order?> {
     emit(order);
   }
 
+  Future<List<Order>> getList() async {
+    try {
+      final http = await httpInstance();
+      final res = await http.get('/order');
+
+      return List.from(res.data['data']).map<Order>((item) {
+        return Order.fromJSON(item);
+      }).toList();
+    } catch (e) {
+      return [];
+    }
+  }
+
   Future<ApiResponse> store(Order order, Payment payment) async {
     try {
       Map<String, dynamic> data = order.toJSON();
