@@ -1,7 +1,7 @@
 import 'package:anterin/components/bottom_nav_bar.dart';
 import 'package:anterin/components/hr.dart';
-import 'package:anterin/constant.dart';
-import 'package:anterin/types/order_status.dart';
+import 'package:anterin/constants/app.dart';
+import 'package:anterin/constants/order_status.dart';
 import 'package:anterin/utils/dates.dart';
 import 'package:flutter/material.dart';
 

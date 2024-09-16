@@ -1,6 +1,6 @@
 import 'package:anterin/blocs/auth.dart';
 import 'package:anterin/blocs/loader.dart';
-import 'package:anterin/constant.dart';
+import 'package:anterin/constants/app.dart';
 import 'package:anterin/utils/dialog.dart';
 import 'package:anterin/utils/loader.dart';
 import 'package:flutter/material.dart';

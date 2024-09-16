@@ -1,4 +1,4 @@
-import 'package:anterin/constant.dart';
+import 'package:anterin/constants/app.dart';
 import 'package:flutter/material.dart';
 
 class MakanMinumScreen extends StatefulWidget {

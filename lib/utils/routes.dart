@@ -1,8 +1,8 @@
 import 'package:anterin/screens/coming-soon/index.dart';
-import 'package:anterin/screens/home/index.dart';
-import 'package:anterin/screens/home/makan_minum/index.dart';
+import 'package:anterin/screens/user/home/index.dart';
+import 'package:anterin/screens/user/home/makan_minum/index.dart';
 import 'package:anterin/screens/login/index.dart';
-import 'package:anterin/screens/pesanan/index.dart';
+import 'package:anterin/screens/user/pesanan/index.dart';
 import 'package:anterin/screens/register/index.dart';
 import 'package:anterin/screens/saya/index.dart';
 import 'package:anterin/screens/splash/index.dart';

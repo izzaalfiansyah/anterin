@@ -2,7 +2,7 @@ import 'package:anterin/blocs/loader.dart';
 import 'package:anterin/blocs/order.dart';
 import 'package:anterin/components/hr.dart';
 import 'package:anterin/components/maps.dart';
-import 'package:anterin/constant.dart';
+import 'package:anterin/constants/app.dart';
 import 'package:anterin/models/order.dart';
 import 'package:anterin/models/payment.dart';
 import 'package:anterin/utils/dialog.dart';

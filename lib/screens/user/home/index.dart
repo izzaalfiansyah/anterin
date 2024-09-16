@@ -1,8 +1,8 @@
 import 'package:anterin/components/bottom_nav_bar.dart';
 import 'package:anterin/components/hr.dart';
-import 'package:anterin/screens/home/pesanan_lain.dart';
-import 'package:anterin/constant.dart';
-import 'package:anterin/types/kategori_layanan.dart';
+import 'package:anterin/screens/user/home/pesanan_lain.dart';
+import 'package:anterin/constants/app.dart';
+import 'package:anterin/constants/kategori_layanan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 

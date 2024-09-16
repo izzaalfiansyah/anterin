@@ -40,11 +40,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
       label: 'Pesanan',
       path: '/pesanan',
     ),
-    BottomNavBarItem(
-      icon: Icons.notifications,
-      label: 'Inbox',
-      path: '/inbox',
-    ),
+    // BottomNavBarItem(
+    //   icon: Icons.notifications,
+    //   label: 'Inbox',
+    //   path: '/inbox',
+    // ),
     BottomNavBarItem(
       icon: Icons.account_circle,
       label: 'Saya',

@@ -1,6 +1,6 @@
 import 'package:anterin/models/order.dart';
 import 'package:anterin/models/payment.dart';
-import 'package:anterin/types/api_response.dart';
+import 'package:anterin/constants/api_response.dart';
 import 'package:anterin/utils/http.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

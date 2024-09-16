@@ -1,7 +1,7 @@
 import 'package:anterin/blocs/auth.dart';
 import 'package:anterin/blocs/loader.dart';
 import 'package:anterin/blocs/order.dart';
-import 'package:anterin/constant.dart';
+import 'package:anterin/constants/app.dart';
 import 'package:anterin/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

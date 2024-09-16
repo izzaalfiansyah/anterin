@@ -1,5 +1,5 @@
 import 'package:anterin/models/user.dart';
-import 'package:anterin/types/api_response.dart';
+import 'package:anterin/constants/api_response.dart';
 import 'package:anterin/utils/device.dart';
 import 'package:anterin/utils/http.dart';
 import 'package:anterin/utils/token.dart';
