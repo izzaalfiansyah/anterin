@@ -56,6 +56,28 @@ class OrderBloc extends Cubit<Order?> {
     }
   }
 
+  Future<ApiResponse> updateStatus(
+    dynamic id, {
+    required String status,
+    bool cancelByCourier = false,
+    String? reason,
+  }) async {
+    try {
+      final http = await httpInstance();
+      final res = await http.put('/order/$id/status', data: {
+        'status': status,
+        'cancel_by_courier': cancelByCourier,
+        'reason': reason,
+      });
+
+      return ApiResponse(message: res.data['message']);
+    } on DioException catch (e) {
+      return ApiResponse(message: e.response!.data['message'], isError: true);
+    } catch (e) {
+      return ApiResponse(message: 'Terjadi kesalahan', isError: true);
+    }
+  }
+
   Future<ApiResponse> store(Order order, Payment payment) async {
     try {
       Map<String, dynamic> data = order.toJSON();

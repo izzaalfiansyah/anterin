@@ -80,7 +80,7 @@ class PesananDetailScreenState extends State<PesananDetailScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "${formatDate(order!.schedule!)} ${formatTime(TimeOfDay.fromDateTime(order!.schedule!))}",
+                            formatDateTime(order!.schedule!),
                             style:
                                 Theme.of(context).textTheme.bodyLarge!.copyWith(
                                       fontWeight: FontWeight.bold,
@@ -134,6 +134,7 @@ class PesananDetailScreenState extends State<PesananDetailScreen> {
               ),
               StatusPengiriman(
                 order: order!,
+                orderBloc: orderBloc,
                 refresh: getOrder,
               ),
             ],

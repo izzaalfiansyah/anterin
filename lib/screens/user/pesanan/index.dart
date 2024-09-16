@@ -124,14 +124,15 @@ class _PesananScreenState extends State<PesananScreen> {
                   final order = orders[index];
 
                   return GestureDetector(
-                    onTap: () {
-                      Modular.to.push(
+                    onTap: () async {
+                      await Modular.to.push(
                         MaterialPageRoute(
                           builder: (context) => PesananDetailScreen(
                             orderId: order.id,
                           ),
                         ),
                       );
+                      getOrders();
                     },
                     child: Container(
                       padding: EdgeInsets.all(30),
@@ -147,7 +148,7 @@ class _PesananScreenState extends State<PesananScreen> {
                         children: [
                           Icon(
                             Icons.circle_outlined,
-                            color: cPrimary,
+                            color: Colors.grey,
                             size: 14,
                           ),
                           SizedBox(width: 30),
@@ -179,7 +180,7 @@ class _PesananScreenState extends State<PesananScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "${formatDate(order.schedule!)} ${formatTime(TimeOfDay.fromDateTime(order.schedule!))}",
+                                      formatDateTime(order.schedule!),
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall!

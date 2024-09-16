@@ -30,7 +30,6 @@ showConfirmModal(
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop();
               onConfirmed();
             },
             child: Text('OK'),

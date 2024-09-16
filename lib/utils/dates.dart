@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
+const gmt = 7;
+
 String formatDate(DateTime dateTime) {
+  dateTime = dateTime.add(Duration(hours: gmt));
+
   final bulan = [
     '',
     'Januari',
@@ -18,6 +22,10 @@ String formatDate(DateTime dateTime) {
   ];
 
   return "${dateTime.day} ${bulan[dateTime.month]} ${dateTime.year}";
+}
+
+String formatDateTime(DateTime dateTime) {
+  return "${formatDate(dateTime)} ${formatTime(TimeOfDay.fromDateTime(dateTime.add(Duration(hours: gmt))))}";
 }
 
 String formatTime(TimeOfDay timeOfDay) {

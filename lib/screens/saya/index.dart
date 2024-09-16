@@ -31,6 +31,7 @@ class _SayaScreenState extends State<SayaScreen> {
       child: Text('Anda yakin akan keluar? Sesi anda akan terhapus!'),
       onConfirmed: () async {
         await BlocProvider.of<AuthBloc>(context).logout();
+        Navigator.of(context).pop();
       },
     );
   }

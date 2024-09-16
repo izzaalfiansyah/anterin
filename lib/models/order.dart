@@ -17,6 +17,9 @@ class Order {
   String? reason;
   dynamic courier;
   dynamic payment;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  bool cancelByCourier;
 
   Order({
     this.id,
@@ -37,6 +40,9 @@ class Order {
     this.reason,
     this.courier,
     this.payment,
+    this.createdAt,
+    this.updatedAt,
+    this.cancelByCourier = false,
   });
 
   factory Order.fromJSON(Map<String, dynamic> map) {
@@ -55,11 +61,14 @@ class Order {
       deliveryMapLat: map['delivery_map_lat'],
       deliveryMapLng: map['delivery_map_lng'],
       distance: map['distance'],
-      schedule:
-          DateTime.parse(map['schedule'] ?? DateTime.now().toIso8601String()),
+      schedule: DateTime.parse(map['schedule'] ?? map['created_at']),
       reason: map['reason'],
       courier: map['courier'],
       payment: map['payment'],
+      cancelByCourier: map['cancel_by_courier'],
+      createdAt: DateTime.parse(map['created_at']),
+      updatedAt:
+          map['updated_at'] != null ? DateTime.parse(map['updated_at']) : null,
     );
   }
 
@@ -79,7 +88,7 @@ class Order {
       'delivery_map_lat': deliveryMapLat,
       'delivery_map_lng': deliveryMapLng,
       'distance': distance,
-      'schedule': schedule?.toIso8601String(),
+      'schedule': schedule?.toUtc().toIso8601String(),
       'reason': reason,
       'courier': courier,
       'payment': payment,

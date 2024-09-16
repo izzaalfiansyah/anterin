@@ -1,3 +1,4 @@
+import 'package:anterin/blocs/order.dart';
 import 'package:anterin/components/form_group.dart';
 import 'package:anterin/constants/app.dart';
 import 'package:anterin/constants/order_status.dart';
@@ -5,15 +6,19 @@ import 'package:anterin/models/order.dart';
 import 'package:anterin/utils/dates.dart';
 import 'package:anterin/utils/dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:form_validator/form_validator.dart';
 
 class StatusPengiriman extends StatefulWidget {
   const StatusPengiriman({
     super.key,
     required this.order,
+    required this.orderBloc,
     required this.refresh,
   });
 
   final Order order;
+  final OrderBloc orderBloc;
   final Function refresh;
 
   @override
@@ -21,27 +26,84 @@ class StatusPengiriman extends StatefulWidget {
 }
 
 class _StatusPengirimanState extends State<StatusPengiriman> {
+  int currentStatusIndex = 0;
+
+  setCurrentStatusIndex() {
+    if (mounted) {
+      setState(() {
+        currentStatusIndex = orderStatus.indexOf(
+          orderStatus.firstWhere(
+            (status) => status.label == widget.order.status,
+          ),
+        );
+      });
+    }
+  }
+
   cancelOrder() async {
+    final reasonController = TextEditingController();
+    final cancelFormKey = GlobalKey<FormState>();
+
+    updateStatus({
+      required String status,
+      required String message,
+      String? reason,
+    }) async {
+      final res = await widget.orderBloc.updateStatus(
+        widget.order.id,
+        status: status,
+        reason: reason,
+      );
+
+      if (!res.isError) {
+        showNotification(context, message: message);
+      } else {
+        showNotification(context, message: res.message, error: true);
+      }
+
+      await widget.refresh();
+      Modular.to.pop();
+
+      setCurrentStatusIndex();
+    }
+
     showConfirmModal(
       context,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(height: 30),
-          FormGroup(
-            label: Text('Anda yakin ingin membatalkan pesanan?'),
-            child: TextFormField(
-              decoration: InputDecoration(hintText: 'Berikan alasanmu...'),
-              maxLines: 3,
+      child: Form(
+        key: cancelFormKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 30),
+            FormGroup(
+              label: Text('Anda yakin ingin membatalkan pesanan?'),
+              child: TextFormField(
+                controller: reasonController,
+                decoration: InputDecoration(hintText: 'Berikan alasanmu...'),
+                maxLines: 3,
+                validator: ValidationBuilder().required().build(),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-      onConfirmed: () {
-        print('yakin batal boss');
+      onConfirmed: () async {
+        if (cancelFormKey.currentState!.validate()) {
+          await updateStatus(
+            status: 'canceled',
+            message: 'Orderan berhasil dibatalkan',
+            reason: reasonController.text,
+          );
+        }
       },
     );
+  }
+
+  @override
+  void initState() {
+    setCurrentStatusIndex();
+    super.initState();
   }
 
   @override
@@ -66,26 +128,28 @@ class _StatusPengirimanState extends State<StatusPengiriman> {
             controlsBuilder: (context, details) {
               return Row();
             },
+            currentStep: currentStatusIndex,
             steps: orderStatus.map<Step>((status) {
               final index = orderStatus.indexOf(status);
-              final currentStatusIndex = orderStatus.indexOf(
-                orderStatus.firstWhere(
-                  (status) => status.label == widget.order.status,
-                ),
-              );
 
               final isActive = currentStatusIndex >= index;
-              final dateFormatted =
-                  "${formatDate(widget.order.schedule!)} ${formatTime(TimeOfDay.fromDateTime(widget.order.schedule!))}";
+
+              String dateFormatted = formatDateTime(widget.order.updatedAt!);
 
               String text = '';
               String? actionText;
               Function action = () {};
 
               if (status.label == 'pending') {
+                dateFormatted = formatDateTime(widget.order.createdAt!);
                 text = "Pesanan berhasil dibuat";
                 actionText = 'Batalkan';
                 action = cancelOrder;
+              }
+
+              if (status.label == 'canceled') {
+                text =
+                    "Pesanan dibatalkan oleh ${widget.order.cancelByCourier ? 'kurir' : 'anda'}";
               }
 
               return Step(
