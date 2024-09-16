@@ -6,6 +6,7 @@ import 'package:anterin/constants/app.dart';
 import 'package:anterin/models/order.dart';
 import 'package:anterin/screens/user/pesanan/detail/status_pengiriman.dart';
 import 'package:anterin/utils/dates.dart';
+import 'package:anterin/utils/distance.dart';
 import 'package:anterin/utils/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -80,30 +81,18 @@ class PesananDetailScreenState extends State<PesananDetailScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
+                            'Jadwal orderan',
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      color: Colors.grey,
+                                    ),
+                          ),
+                          Text(
                             formatDateTime(order!.schedule!),
                             style:
                                 Theme.of(context).textTheme.bodyLarge!.copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
-                          ),
-                          RichText(
-                            text: TextSpan(
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(
-                                    color: Colors.grey,
-                                  ),
-                              children: [
-                                TextSpan(text: 'Jarak tempuh: '),
-                                TextSpan(
-                                  text: '${order!.distance}m',
-                                  style: TextStyle(
-                                    color: Colors.orange,
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                         ],
                       ),
@@ -129,6 +118,11 @@ class PesananDetailScreenState extends State<PesananDetailScreen> {
                           "${order!.deliveryAddress}, ${order!.deliveryMapAddress}",
                     ),
                     SizedBox(height: 24),
+                    detailTile(
+                      title: 'Jarak Tempuh',
+                      subtitle: '${formatDistance(order!.distance)}',
+                      subtitleColor: Colors.deepOrange,
+                    ),
                   ],
                 ),
               ),
@@ -136,6 +130,68 @@ class PesananDetailScreenState extends State<PesananDetailScreen> {
                 order: order!,
                 orderBloc: orderBloc,
                 refresh: getOrder,
+              ),
+              Container(
+                padding: EdgeInsets.all(30),
+                margin: EdgeInsets.only(top: 10),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: shadowSm,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Ongkos Kirim:'),
+                        Text(
+                          'Rp. ${order!.payment!.shippingCost.toInt()}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Biaya Admin:'),
+                        Text(
+                          'Rp. ${order!.payment!.adminFee.toInt()}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Hr(
+                      color: Colors.grey.shade300,
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Total Biaya:',
+                          style: TextStyle(
+                            color: cPrimary,
+                          ),
+                        ),
+                        Text(
+                          'Rp. ${order!.payment!.total.toInt()}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: cPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           );
@@ -147,6 +203,7 @@ class PesananDetailScreenState extends State<PesananDetailScreen> {
   Column detailTile({
     required String title,
     required String subtitle,
+    Color? subtitleColor,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,7 +217,9 @@ class PesananDetailScreenState extends State<PesananDetailScreen> {
         SizedBox(height: 2.5),
         Text(
           subtitle,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: subtitleColor,
+              ),
         ),
       ],
     );

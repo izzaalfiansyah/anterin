@@ -21,7 +21,7 @@ String formatDate(DateTime dateTime) {
     'Desember',
   ];
 
-  return "${dateTime.day} ${bulan[dateTime.month]} ${dateTime.year}";
+  return "${dateTime.day} ${bulan[dateTime.month].substring(0, 3)} ${dateTime.year}";
 }
 
 String formatDateTime(DateTime dateTime) {

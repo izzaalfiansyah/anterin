@@ -111,100 +111,124 @@ class _StatusPengirimanState extends State<StatusPengiriman> {
     final size = MediaQuery.sizeOf(context);
 
     return Container(
-      padding: EdgeInsets.all(30),
+      padding: EdgeInsets.symmetric(horizontal: 30),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: shadowSm,
         borderRadius: BorderRadius.circular(5),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Status Pengiriman'),
-          SizedBox(height: 30),
-          Stepper(
-            physics: NeverScrollableScrollPhysics(),
-            type: StepperType.vertical,
-            controlsBuilder: (context, details) {
-              return Row();
-            },
-            currentStep: currentStatusIndex,
-            steps: orderStatus.map<Step>((status) {
-              final index = orderStatus.indexOf(status);
+      child: Theme(
+        data: ThemeData().copyWith(
+          dividerColor: Colors.transparent,
+        ),
+        child: ExpansionTile(
+          title: Text(
+            'Status Pengiriman',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          tilePadding: EdgeInsets.all(0),
+          childrenPadding: EdgeInsets.all(0),
+          children: [
+            Stepper(
+              physics: NeverScrollableScrollPhysics(),
+              type: StepperType.vertical,
+              controlsBuilder: (context, details) {
+                return Row();
+              },
+              currentStep: currentStatusIndex,
+              steps: orderStatus.map<Step>((status) {
+                final index = orderStatus.indexOf(status);
 
-              final isActive = currentStatusIndex >= index;
+                final isActive = currentStatusIndex >= index;
 
-              String dateFormatted = formatDateTime(widget.order.updatedAt!);
+                String dateFormatted = formatDateTime(widget.order.updatedAt!);
 
-              String text = '';
-              String? actionText;
-              Function action = () {};
+                String text = '';
+                String? actionText;
+                Function action = () {};
 
-              if (status.label == 'pending') {
-                dateFormatted = formatDateTime(widget.order.createdAt!);
-                text = "Pesanan berhasil dibuat";
-                actionText = 'Batalkan';
-                action = cancelOrder;
-              }
+                if (status.label == 'pending') {
+                  dateFormatted = formatDateTime(widget.order.createdAt!);
+                  text =
+                      "Pesanan berhasil dibuat. Silahkan tunggu konfirmasi dari kurir!";
+                  actionText = 'Batalkan';
+                  action = cancelOrder;
+                }
 
-              if (status.label == 'canceled') {
-                text =
-                    "Pesanan dibatalkan oleh ${widget.order.cancelByCourier ? 'kurir' : 'anda'}";
-              }
+                if (status.label == 'canceled') {
+                  text =
+                      "Pesanan dibatalkan oleh ${widget.order.cancelByCourier ? 'kurir' : 'anda'}";
 
-              return Step(
-                title: Text(status.text),
-                content: SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "$text\n$dateFormatted",
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              color: Colors.grey,
-                            ),
-                        textAlign: TextAlign.left,
-                      ),
-                      actionText == null
-                          ? SizedBox()
-                          : Container(
-                              margin: EdgeInsets.only(top: 20),
-                              child: TextButton(
-                                onPressed: () {
-                                  action();
-                                },
-                                style: TextButton.styleFrom(
-                                  fixedSize: Size.fromWidth(size.width),
-                                  minimumSize: Size.fromHeight(0),
-                                  side: BorderSide(
-                                      color: cPrimary.withOpacity(.6)),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(3),
+                  if (widget.order.reason != null) {
+                    text += " dengan alasan \"${widget.order.reason}\"";
+                  }
+                }
+
+                return Step(
+                  title: Text(status.text),
+                  content: SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          text,
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    color: Colors.grey,
+                                  ),
+                          textAlign: TextAlign.left,
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          dateFormatted,
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    color: Colors.deepOrange,
+                                    fontSize: 10,
+                                  ),
+                          textAlign: TextAlign.left,
+                        ),
+                        actionText == null
+                            ? SizedBox()
+                            : Container(
+                                margin: EdgeInsets.only(top: 20),
+                                child: TextButton(
+                                  onPressed: () {
+                                    action();
+                                  },
+                                  style: TextButton.styleFrom(
+                                    fixedSize: Size.fromWidth(size.width),
+                                    minimumSize: Size.fromHeight(0),
+                                    side: BorderSide(
+                                        color: cPrimary.withOpacity(.6)),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(3),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    actionText.toUpperCase(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(
+                                          color: cPrimary,
+                                        ),
                                   ),
                                 ),
-                                child: Text(
-                                  actionText.toUpperCase(),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                        color: cPrimary,
-                                      ),
-                                ),
                               ),
-                            ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                isActive: currentStatusIndex >= index,
-                stepStyle: StepStyle(
-                  color: isActive ? cPrimary : Colors.grey.shade300,
-                ),
-              );
-            }).toList(),
-          )
-        ],
+                  isActive: currentStatusIndex >= index,
+                  stepStyle: StepStyle(
+                    color: isActive ? cPrimary : Colors.grey.shade300,
+                  ),
+                );
+              }).toList(),
+            )
+          ],
+        ),
       ),
     );
   }

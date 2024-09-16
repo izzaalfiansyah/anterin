@@ -7,6 +7,7 @@ import 'package:anterin/constants/order_status.dart';
 import 'package:anterin/models/order.dart';
 import 'package:anterin/screens/user/pesanan/detail/index.dart';
 import 'package:anterin/utils/dates.dart';
+import 'package:anterin/utils/distance.dart';
 import 'package:anterin/utils/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -166,9 +167,10 @@ class _PesananScreenState extends State<PesananScreen> {
                                         text: "${order.description} ",
                                       ),
                                       TextSpan(
-                                        text: ' (${order.distance}m)',
+                                        text:
+                                            '(${formatDistance(order.distance)})',
                                         style: TextStyle(
-                                          color: Colors.orange,
+                                          color: Colors.deepOrange,
                                           fontSize: 10,
                                         ),
                                       ),
@@ -176,19 +178,14 @@ class _PesananScreenState extends State<PesananScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 5),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      formatDateTime(order.schedule!),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                            color: Colors.grey,
-                                          ),
-                                    ),
-                                  ],
+                                Text(
+                                  "Jadwal: ${formatDateTime(order.schedule!)}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(
+                                        color: Colors.grey,
+                                      ),
                                 ),
                               ],
                             ),

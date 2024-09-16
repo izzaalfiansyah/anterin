@@ -1,3 +1,6 @@
+import 'package:anterin/models/courier.dart';
+import 'package:anterin/models/payment.dart';
+
 class Order {
   dynamic id;
   dynamic userId;
@@ -15,8 +18,8 @@ class Order {
   num distance;
   DateTime? schedule;
   String? reason;
-  dynamic courier;
-  dynamic payment;
+  Courier? courier;
+  Payment? payment;
   DateTime? createdAt;
   DateTime? updatedAt;
   bool cancelByCourier;
@@ -63,8 +66,8 @@ class Order {
       distance: map['distance'],
       schedule: DateTime.parse(map['schedule'] ?? map['created_at']),
       reason: map['reason'],
-      courier: map['courier'],
-      payment: map['payment'],
+      courier: map['courier'] != null ? Courier.fromJSON(map['courier']) : null,
+      payment: map['payment'] != null ? Payment.fromJSON(map['payment']) : null,
       cancelByCourier: map['cancel_by_courier'],
       createdAt: DateTime.parse(map['created_at']),
       updatedAt:
@@ -90,8 +93,6 @@ class Order {
       'distance': distance,
       'schedule': schedule?.toUtc().toIso8601String(),
       'reason': reason,
-      'courier': courier,
-      'payment': payment,
     };
   }
 }

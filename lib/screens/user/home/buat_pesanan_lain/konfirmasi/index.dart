@@ -6,6 +6,7 @@ import 'package:anterin/constants/app.dart';
 import 'package:anterin/models/order.dart';
 import 'package:anterin/models/payment.dart';
 import 'package:anterin/utils/dialog.dart';
+import 'package:anterin/utils/distance.dart';
 import 'package:anterin/utils/loader.dart';
 import 'package:anterin/utils/payment.dart';
 import 'package:flutter/material.dart';
@@ -45,128 +46,129 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
       appBar: AppBar(
         title: Text('Konfirmasi Pesanan'),
       ),
-      body: BlocBuilder<OrderBloc, Order?>(
-        builder: (context, state) {
-          return ListView(
-            children: [
-              Container(
-                // padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  boxShadow: shadowSm,
-                  color: Colors.white,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Maps(
-                      size: size.height * 1 / 2,
-                      center: LatLng(-8.160916921864638, 113.72277131655589),
-                      route: MapRoute(
-                        from: LatLng(
-                          state!.pickupMapLat.toDouble(),
-                          state.pickupMapLng.toDouble(),
-                        ),
-                        to: LatLng(
-                          state.deliveryMapLat.toDouble(),
-                          state.deliveryMapLng.toDouble(),
-                        ),
-                      ),
-                      onRouteFound: (route) {
-                        setState(() {
-                          distance = route.distance.toDouble();
-                          shippingCost = getOngkir(distance);
-                          total = shippingCost + adminFee;
-                        });
-                        loaderInstance(context).off();
-                      },
+      body: BlocBuilder<LoaderBloc, bool>(
+        builder: (context, isLoading) {
+          return BlocBuilder<OrderBloc, Order?>(
+            builder: (context, state) {
+              return ListView(
+                children: [
+                  Container(
+                    // padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      boxShadow: shadowSm,
+                      color: Colors.white,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Jarak Tempuh:'),
-                          Text(
-                            '${distance.toStringAsFixed(1)} m',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Maps(
+                          size: size.height * 1 / 2,
+                          center:
+                              LatLng(-8.160916921864638, 113.72277131655589),
+                          route: MapRoute(
+                            from: LatLng(
+                              state!.pickupMapLat.toDouble(),
+                              state.pickupMapLng.toDouble(),
+                            ),
+                            to: LatLng(
+                              state.deliveryMapLat.toDouble(),
+                              state.deliveryMapLng.toDouble(),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              Container(
-                padding: EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  boxShadow: shadowSm,
-                  color: Colors.white,
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Ongkos Kirim:'),
-                        Text(
-                          'Rp. ${shippingCost.toInt()}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                          onRouteFound: (route) {
+                            setState(() {
+                              distance = route.distance.toDouble();
+                              shippingCost = getOngkir(distance);
+                              total = shippingCost + adminFee;
+                            });
+                            loaderInstance(context).off();
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Jarak Tempuh:'),
+                              Text(
+                                formatDistance(distance),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      boxShadow: shadowSm,
+                      color: Colors.white,
+                    ),
+                    child: Column(
                       children: [
-                        Text('Biaya Admin:'),
-                        Text(
-                          'Rp. ${adminFee.toInt()}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Ongkos Kirim:'),
+                            Text(
+                              'Rp. ${shippingCost.toInt()}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Biaya Admin:'),
+                            Text(
+                              'Rp. ${adminFee.toInt()}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        Hr(
+                          color: Colors.grey.shade300,
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Total Biaya:',
+                              style: TextStyle(
+                                color: cPrimary,
+                              ),
+                            ),
+                            Text(
+                              'Rp. ${total.toInt()}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: cPrimary,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
-                    Hr(
-                      color: Colors.grey.shade300,
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Total Biaya:',
-                          style: TextStyle(
-                            color: cPrimary,
-                          ),
-                        ),
-                        Text(
-                          'Rp. ${total.toInt()}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: cPrimary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              BlocBuilder<LoaderBloc, bool>(
-                builder: (context, state) {
-                  return Padding(
+                  ),
+                  Padding(
                     padding: EdgeInsets.all(20),
                     child: FilledButton(
                       style: FilledButton.styleFrom(
                         backgroundColor: cPrimary,
                       ),
-                      onPressed: state
+                      onPressed: isLoading
                           ? null
                           : () async {
                               loaderInstance(context).on();
@@ -194,12 +196,12 @@ class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
 
                               loaderInstance(context).off();
                             },
-                      child: Text(state ? 'MEMUAT' : 'KONFIRMASI'),
+                      child: Text(isLoading ? 'MEMUAT' : 'KONFIRMASI'),
                     ),
-                  );
-                },
-              )
-            ],
+                  ),
+                ],
+              );
+            },
           );
         },
       ),
