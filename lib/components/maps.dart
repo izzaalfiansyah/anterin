@@ -6,7 +6,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
-final mapsDefaultCenter = LatLng(-8.15997175201657, 113.72268022967968);
+final mapsDefaultCenter = LatLng(-8.158270266484065, 113.71681634853147);
 
 class MapRoute {
   final LatLng from;
@@ -142,6 +142,8 @@ class _MapsState extends State<Maps> {
           'from_lng': from.longitude,
           'to_lat': to.latitude,
           'to_lng': to.longitude,
+          'center_lat': mapsDefaultCenter.latitude,
+          'center_lng': mapsDefaultCenter.longitude,
         });
 
         final route = MapRouteResponse.fromJSON(res.data);
@@ -183,6 +185,15 @@ class _MapsState extends State<Maps> {
                     'https://mt0.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
                 // And many more recommended properties!
               ),
+              CircleLayer(circles: [
+                CircleMarker(
+                  point: mapsDefaultCenter,
+                  radius: 60,
+                  color: cPrimary.withOpacity(.2),
+                  borderColor: cPrimary,
+                  borderStrokeWidth: 1.5,
+                ),
+              ]),
               routesPoints.isNotEmpty
                   ? PolylineLayer(
                       polylines: [

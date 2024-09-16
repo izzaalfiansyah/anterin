@@ -22,7 +22,7 @@ class KonfirmasiPesananLainScreen extends StatefulWidget {
 
 class _BuatPesananLainScreenState extends State<KonfirmasiPesananLainScreen> {
   double distance = 0;
-  double adminFee = 1000;
+  double adminFee = 0;
   double shippingCost = 0;
   double total = 0;
 
